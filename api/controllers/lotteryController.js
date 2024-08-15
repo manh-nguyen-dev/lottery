@@ -72,8 +72,8 @@ const getResultsByDate = async (req, res) => {
             ]
         });
 
-        // Lấy các số từ các kết quả và đảo ngược thứ tự
-        const numbers = results.flatMap(result => result.Numbers).reverse();
+        // Lấy các số từ các kết quả
+        const numbers = results.flatMap(result => result.Numbers);
 
         // Xác định nếu có đủ 27 số
         const hasResults = numbers.length > 0;
