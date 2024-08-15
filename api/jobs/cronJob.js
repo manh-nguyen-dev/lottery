@@ -7,7 +7,7 @@ const { getTodayDate } = require("../utils/dateUtils");
 
 // Constants
 const API_BASE_URL = process.env.API_BASE_URL;
-const CHECK_TIME = { hours: 21, minutes: 59 };
+const CHECK_TIME = { hours: 22, minutes: 21 };
 const ADD_NUMBER_INTERVAL = 1000; // 1 second
 const MAX_COUNT = 27;
 

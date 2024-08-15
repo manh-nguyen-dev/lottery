@@ -1,10 +1,15 @@
+import React, { useEffect, useState } from "react";
+
 import "./styleAll.css";
 import styles from "./styleAll.css";
 import Header from "./components/header.js";
 import Footer from "./components/footer.js";
 import StatisticList from "./components/statistic/list.js";
+import PrizeTable from "./components/prizeTable.js";
 
-export default function Home() {
+export default function Home({ numbers }) {
+  console.log("numbers", numbers);
+
   return (
     <>
       <meta charSet="UTF-8" />
@@ -294,6 +299,8 @@ export default function Home() {
                     </h3>
                   </div>
                 </header>
+                <PrizeTable numbers={numbers} />
+
                 <div className="site-link2">
                   <h4>
                     <a
