@@ -1,0 +1,9 @@
+.footer {
+    width: 100%;
+    border-top: solid 1px #dddfe2;
+    margin-top: 20px;
+}
+
+.footer .main-content {
+    background-color: #f0f8ff;
+}

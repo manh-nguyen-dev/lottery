@@ -58,28 +58,8 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const pStyle = {
-    fontSize: "16px",
-    color: "#333",
-    margin: "10px 0",
-    padding: "5px",
-    borderBottom: "1px solid #ddd",
-  };
-
-  const bStyle = {
-    color: "#007bff",
-  };
-
   return (
     <div>
-      <h1>Socket with React</h1>
-      {numbers.map((number, index) => (
-        <p key={index} style={pStyle}>
-          Value: <b style={bStyle}>{number.value}</b>, Created At:{" "}
-          <b style={bStyle}>{new Date(number.createdAt).toLocaleString()}</b>
-        </p>
-      ))}
-
       <Home numbers={numbers} />
     </div>
   );

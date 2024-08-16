@@ -60,3 +60,35 @@
     background-color: #f0f8ff;
 }
 
+.spinning-ball {
+    width: 20px; /* Adjust the size as needed */
+    height: 20px; /* Adjust the size as needed */
+    background: url("../images/long-quay.gif") no-repeat center
+      center; /* Update with your ball image */
+    background-size: cover;
+    animation: spin 2s linear infinite;
+    position: relative;
+}
+
+#hover-number {
+    height: 30px;
+    border-top: solid 1px #dddfe2;
+    border-right: solid 1px #dddfe2;
+    border-bottom: solid 1px #dddfe2;
+}
+
+  
+#hover-number div{
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px;
+    border-left: solid 1px #dddfe2;
+    width: 100%;
+}
+
+#hover-number div:hover{
+    background-color: #00918d;
+}
+

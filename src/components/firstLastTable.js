@@ -2,21 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import "../styles/prizeTable.css";
 
-export default function PrizeTable({ numbers }) {
-  const [visibleNumbers, setVisibleNumbers] = useState([]);
-
-  useEffect(() => {
-    let interval;
-    if (visibleNumbers.length < numbers.length) {
-      interval = setInterval(() => {
-        const value = numbers[visibleNumbers.length];
-        setVisibleNumbers((prevNumbers) => [...prevNumbers, value]);
-      }, 3000);
-    }
-
-    return () => clearInterval(interval);
-  }, [numbers, visibleNumbers]);
-
+export default function PrizeTable({ visibleNumbers }) {
   const prizes = [
     {
       name: "ĐB",
