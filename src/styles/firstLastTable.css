@@ -1,0 +1,40 @@
+
+.first-last-container {
+    display: flex;
+}
+
+
+
+.first-last-container .first-last-label div {
+    height: 32px;
+    width: 60px;
+    padding: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: solid 1px #dddfe2;
+}
+
+.first-last-container .first-last-label div:first-child {
+    border-top: solid 1px #dddfe2;
+}
+
+
+.first-last-container .first-last-value  {
+    width: 100%;
+    height: 32px;
+    text-align: center;
+}
+
+.first-last-container .first-last-value div {
+    height: 32px;
+    border-bottom: solid 1px #dddfe2;
+}
+
+.first-last-container .first-last-value div:first-child {
+    border-top: solid 1px #dddfe2;
+    justify-content: unset;
+
+}
+
+

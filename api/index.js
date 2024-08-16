@@ -35,7 +35,7 @@ sequelize
   .then(() => {
     server.listen(port, () => {
       logInfo(`Server đang chạy tại http://localhost:${port}`);
-      start(50);
+      start(6);
     });
   })
   .catch((err) => {
