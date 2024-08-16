@@ -10,7 +10,7 @@ const App = () => {
   const fetchNumbers = async () => {
     try {
       const { data } = await axios.get(
-        `${API_URL}/draw-results?date=2024-08-02&province_id=2`
+        `${API_URL}/draw-results?date=2024-08-16&province_id=5`
       );
       setNumbers(data.numbers);
       console.log(data);
@@ -29,7 +29,7 @@ const App = () => {
       console.log("WebSocket connection established");
     };
 
-    if (numbers.length < 27) {
+    if (numbers.length <= 27) {
       socket.onmessage = (event) => {
         // Parse and handle incoming messages
         const data = JSON.parse(event.data);
