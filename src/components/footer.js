@@ -1,8 +1,9 @@
+import "../styles/footer.css";
 
 export default function Footer() {
   return (
     <>
-        <footer
+      <footer
         className="footer"
         id="e_c"
         p="p-top-10 p-bo-10"
@@ -132,7 +133,7 @@ export default function Footer() {
                   <a
                     target="_blank"
                     href="http://xosothudo.com.vn/"
-                    rel="nofollow noopener"
+                    rel="nofollow noopener noreferrer"
                   >
                     Công ty TNHH Một thành viên Xổ số kiến thiết Thủ đô
                   </a>
@@ -144,33 +145,33 @@ export default function Footer() {
                   <img
                     alt="tai ung dung xo so"
                     className="ic24 lazy"
-                    src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs="
+                    src="https://cdn.xoso.com.vn/images/ic24.png"
                     data-src="https://cdn.xoso.com.vn/images/ic24.png"
                   />
                   Tải ứng dụng Xo so LIVE
                 </div>
                 <div className="rows-add">
                   <a
-                    rel="nofollow noopener"
+                    rel="nofollow noopener noreferrer"
                     target="_blank"
                     href="https://play.google.com/store/apps/details?id=com.icsoft.xosotructiepv2"
                   >
                     <img
                       alt="google play"
                       className="lazy"
-                      src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs="
+                      src="https://cdn.xoso.com.vn/images/google_play.png"
                       data-src="https://cdn.xoso.com.vn/images/google_play.png"
                     />
                   </a>
                   <a
-                    rel="nofollow noopener"
+                    rel="nofollow noopener noreferrer"
                     target="_blank"
                     href="https://apps.apple.com/us/app/xo-so-truc-tiep-live-xo-so/id581461709"
                   >
                     <img
                       alt="APPLE go"
                       className="lazy"
-                      src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs="
+                      src="https://cdn.xoso.com.vn/images/APPLE-go.jpg"
                       data-src="https://cdn.xoso.com.vn/images/APPLE-go.jpg"
                     />
                   </a>
@@ -185,12 +186,12 @@ export default function Footer() {
                     <img
                       alt="dmca protected"
                       className="lazy"
-                      src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs="
+                      src="https://cdn.xoso.com.vn/images/dmca_protected_sml_120l.png"
                       data-src="https://cdn.xoso.com.vn/images/dmca_protected_sml_120l.png"
                     />
                   </a>
                   <a
-                    rel="nofollow noopener"
+                    rel="nofollow noopener noreferrer"
                     target="_blank"
                     href="https://www.facebook.com/xoso.com.vn1"
                     className="mxh-like-item"
@@ -200,12 +201,12 @@ export default function Footer() {
                       className="lazy"
                       width={30}
                       height={30}
-                      src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs="
+                      src="https://xoso.com.vn/images/face.svg"
                       data-src="/images/face.svg"
                     />
                   </a>
                   <a
-                    rel="nofollow noopener"
+                    rel="nofollow noopener noreferrer"
                     target="_blank"
                     href="https://www.youtube.com/channel/UCAnknwuIYFedg9MMqWP8PIQ"
                     className="mxh-like-item"
@@ -215,12 +216,12 @@ export default function Footer() {
                       className="lazy"
                       width={30}
                       height={30}
-                      src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs="
+                      src="https://xoso.com.vn/images/you.svg"
                       data-src="/images/you.svg"
                     />
                   </a>
                   <a
-                    rel="nofollow noopener"
+                    rel="nofollow noopener noreferrer"
                     target="_blank"
                     href="https://twitter.com/xosocomvn"
                     className="mxh-like-item"
@@ -230,7 +231,7 @@ export default function Footer() {
                       className="lazy"
                       width={30}
                       height={30}
-                      src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs="
+                      src="https://xoso.com.vn/images/twitter.svg"
                       data-src="/images/twitter.svg"
                     />
                   </a>
