@@ -1,7 +1,7 @@
-import React from 'react';
-import AdminPrizeTable from '../components/adminPrizeTable';
-import { provinces } from '../components/provinces';
-import { WEEK_DAYS_PROVINCES } from '../const/date';
+import React from "react";
+import AdminPrizeTable from "../components/adminPrizeTable";
+import { provinces } from "../const/provinces";
+import { WEEK_DAYS_PROVINCES } from "../const/date";
 import "../styles/adminPrizeTable.css";
 
 const getProvinceByDay = () => {
@@ -11,8 +11,8 @@ const getProvinceByDay = () => {
 };
 
 const getProvinceName = (provinceId) => {
-  const province = provinces.find(p => p.id === provinceId);
-  return province ? province.name : 'Unknown';
+  const province = provinces.find((p) => p.id === provinceId);
+  return province ? province.name : "Unknown";
 };
 
 const Dashboard = ({ numbers }) => {

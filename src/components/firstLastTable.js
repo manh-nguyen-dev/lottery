@@ -56,7 +56,10 @@ export default function FirstLastTable({ visibleNumbers }) {
       <>
         {twoDigits.map((num, index) =>
           num.charAt(idx) === digit.toString() ? (
-            <span className={redRecords.includes(index) ? " color-red" : ""}>
+            <span
+              key={`two ${revertIdx} ${index}`}
+              className={redRecords.includes(index) ? " color-red" : ""}
+            >
               {countMatchValue > 1 && firstMatchIndex !== index ? "," : ""}
               {num.charAt(revertIdx)}
             </span>
