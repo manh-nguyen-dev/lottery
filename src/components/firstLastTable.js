@@ -1,47 +1,73 @@
 import React, { useEffect, useState } from "react";
-
+import { prizes } from "../const/prizes";
+import { getLastTwoDigits } from "../utils/digit";
 import "../styles/firstLastTable.css";
 
 export default function FirstLastTable({ visibleNumbers }) {
-  const getLastTwoDigits = (number = "") => {
-    return number?.toString()?.slice(-2);
-  };
+  const [digits, setDigits] = useState({
+    0: "",
+    1: "",
+    2: "",
+    3: "",
+    4: "",
+    5: "",
+    6: "",
+    7: "",
+    8: "",
+    9: "",
+  });
 
-  const twoDigits = visibleNumbers.map((num) => getLastTwoDigits(num.value));
+  const [twoDigits, setTwoDigits] = useState([]);
 
-  const prioritizeFirstNumbers = visibleNumbers.map((num) =>
-    getLastTwoDigits(num.value)
-  );
-  const prioritizeLastNumbers = visibleNumbers.map((num) =>
-    getLastTwoDigits(num.value)
-  );
+  useEffect(() => {
+    setTwoDigits(visibleNumbers.map((num) => getLastTwoDigits(num.value)));
+  }, [visibleNumbers]);
 
-  const toOneDigits = (twoDigits, value, isFirst = true) => {
-    const idx = isFirst ? 0 : 1;
-    return twoDigits.filter((d) => d?.[0] == value.toString()).map();
-  };
+  const redRecords = prizes
+    .filter((prize) => prize.hasRed)
+    .flatMap((prize) => prize.records);
 
   const renderDigits = () => {
     return (
       <>
-        {Array.from({ length: 10 }, (_, i) => (
-          <div key={i}>{i}</div>
+        {Object.keys(digits).map((i) => (
+          <div key={i} className={i % 2 !== 0 ? "bg-blue-light" : ""}>
+            {i}
+          </div>
         ))}
       </>
     );
   };
 
-  const renderValueByDigits = () => {
+  const renderDigitValues = (digit, first = false) => {
+    const idx = first ? 0 : 1;
+    const revertIdx = first ? 1 : 0;
+
+    let countMatchValue = 0;
+    let firstMatchIndex = 0;
+    for (let i = 0; i < twoDigits.length; i++) {
+      if (twoDigits[i].charAt(idx) === digit.toString()) {
+        countMatchValue === 0 && (firstMatchIndex = i);
+        countMatchValue++;
+      }
+    }
+
     return (
       <>
-        {Array.from({ length: 10 }, (_, i) => (
-          <div>{}</div>
-        ))}
+        {twoDigits.map((num, index) =>
+          num.charAt(idx) === digit.toString() ? (
+            <span className={redRecords.includes(index) ? " color-red" : ""}>
+              {countMatchValue > 1 && firstMatchIndex !== index ? "," : ""}
+              {num.charAt(revertIdx)}
+            </span>
+          ) : (
+            ""
+          )
+        )}
       </>
     );
   };
 
-  console.log("twoDigits", twoDigits);
   return (
     <>
       <div>
@@ -56,19 +82,33 @@ export default function FirstLastTable({ visibleNumbers }) {
       </div>
       <div className="first-last-container">
         <div className="first-last-label">
-          <div>Đầu</div>
+          <div className="bg-blue-light">Đầu</div>
           {renderDigits()}
         </div>
+        <div className="first-last-value ">
+          <div className="bg-blue-light">Đuôi</div>
+          {Object.keys(digits).map((dg) => (
+            <div
+              key={"last" + dg}
+              className={dg % 2 !== 0 ? "bg-blue-light" : ""}
+            >
+              {renderDigitValues(dg)}
+            </div>
+          ))}
+        </div>
         <div className="first-last-value">
-          <div>Đuôi</div>
-          {renderDigits()}
+          <div className="bg-blue-light">Đầu</div>
+          {Object.keys(digits).map((dg) => (
+            <div
+              key={"first" + dg}
+              className={dg % 2 !== 0 ? "bg-blue-light" : ""}
+            >
+              {renderDigitValues(dg, true)}
+            </div>
+          ))}
         </div>
         <div className="first-last-label">
-          <div>Đầu</div>
-          {renderDigits()}
-        </div>
-        <div className="first-last-value">
-          <div>Đuôi</div>
+          <div className="bg-blue-light">Đuôi</div>
           {renderDigits()}
         </div>
       </div>

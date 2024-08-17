@@ -13,10 +13,14 @@
     align-items: center;
     justify-content: center;
     border-bottom: solid 1px #dddfe2;
+    border-right: solid 1px #dddfe2;
+    color: #ed1c25;
+    font-weight: 400;
 }
 
 .first-last-container .first-last-label div:first-child {
     border-top: solid 1px #dddfe2;
+    color: #000;
 }
 
 
@@ -29,11 +33,16 @@
 .first-last-container .first-last-value div {
     height: 32px;
     border-bottom: solid 1px #dddfe2;
+    border-right: solid 1px #dddfe2;
+    text-align: left;
+    font-weight: 600;
+    padding: 3px;
 }
 
 .first-last-container .first-last-value div:first-child {
     border-top: solid 1px #dddfe2;
-    justify-content: unset;
+    text-align: center;
+    font-weight: 400;
 
 }
 

@@ -9,8 +9,6 @@ import Calendar from "./components/calendar.js";
 import RegionProvinceRandomSelect from "./components/regionProvinceRandomSelect.js";
 
 export default function Home({ numbers }) {
-  console.log("numbers", numbers);
-
   return (
     <>
       <meta charSet="UTF-8" />
@@ -115,7 +113,7 @@ export default function Home({ numbers }) {
             </div>
             <div className="section">
               <div className="menu-item5">
-                <a title="Quay thử" href="/quay-thu.html">
+                <a title="Quay thử" href="#">
                   Quay thử
                 </a>
                 <a
@@ -238,29 +236,7 @@ export default function Home({ numbers }) {
                   người chơi không tham gia các trò chơi biến tướng từ xổ số, vi
                   phạm pháp luật Việt Nam.
                 </p>
-                <RegionProvinceRandomSelect/>
-                {/* <div className="form-group">
-                  <div className="btn-item">
-                    <select
-                      id="ddlProvincesQuayThu"
-                      onchange="this.options[this.selectedIndex].value&&(window.location=this.options[this.selectedIndex].value)"
-                    >
-                      <option value="/quay-thu-xsmb.html" selected="">
-                        Miền Bắc
-                      </option>
-                      <option value="/quay-thu-xsmn.html">Miền Nam</option>
-                      <option value="/quay-thu-xsmt.html">Miền Trung</option>
-                    </select>
-                  </div>
-                  <div className="btn-item2 fixw">
-                    <button
-                      id="btnStartOrStop"
-                      className="btn btn-danger"
-                    >
-                      Quay thử
-                    </button>
-                  </div>
-                </div> */}
+                <RegionProvinceRandomSelect />
                 <div id="quaythudate" />
               </div>
               <div id="quaythumb" className="section-content">
@@ -546,10 +522,7 @@ export default function Home({ numbers }) {
                 <div className="widget-container">
                   <div className="form-wg">
                     <div className="form-group">
-                      <label className="label_gril">
-                        Bộ số:
-                        <input id="test1" />
-                      </label>
+                      <label className="label_gril">Bộ số:</label>
                       <div className="input_gril">
                         <input id="number_l4681z" />
                         <div className="text-danger">
@@ -558,10 +531,7 @@ export default function Home({ numbers }) {
                       </div>
                     </div>
                     <div className="form-group">
-                      <label className="label_gril">
-                        Từ ngày:
-                        <input id="test2" />
-                      </label>
+                      <label className="label_gril">Từ ngày:</label>
                       <div className="input_gril">
                         <input
                           id="dateRangeForm_g09f8w"
@@ -575,10 +545,7 @@ export default function Home({ numbers }) {
                       </div>
                     </div>
                     <div className="form-group">
-                      <label className="label_gril">
-                        Đến ngày:
-                        <input id="test3" />
-                      </label>
+                      <label className="label_gril">Đến ngày:</label>
                       <div className="input_gril">
                         <input
                           id="dateRangeTo_k98pru"
@@ -592,10 +559,7 @@ export default function Home({ numbers }) {
                       </div>
                     </div>
                     <div className="form-group">
-                      <label className="label_gril">
-                        Tỉnh TP:
-                        <input id="test4" />
-                      </label>
+                      <label className="label_gril">Tỉnh TP:</label>
                       <div className="input_gril">
                         <select id="province_w0c38u">
                           <option value={0}>Miền Bắc</option>
