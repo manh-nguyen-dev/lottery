@@ -1,14 +1,16 @@
 require("dotenv").config();
 
-const express = require("express");
-const bodyParser = require("body-parser");
-const http = require("http");
-const sequelize = require("./config/database");
-const lotteryRoutes = require("./routes/lotteryRoutes");
-const provincesRoutes = require("./routes/provincesRoutes");
-const { logInfo, logError } = require("./utils/logger");
-const { start } = require("./jobs/cronJob");
-const { initWebSocket } = require("./config/socket");
+const express = require('express');
+const bodyParser = require('body-parser');
+const http = require('http');
+const sequelize = require('./config/database');
+const lotteryRoutes = require('./routes/lotteryRoutes');
+const provincesRoutes = require('./routes/provincesRoutes');
+const adminLotteryRoutes = require('./routes/adminLotteryRoutes');
+const { logInfo, logError } = require('./utils/logger');
+const { start } = require('./jobs/cronJob');
+const dailyLotteryJob = require('./jobs/dailyLotteryJob');
+const { initWebSocket } = require('./config/socket');
 const cors = require("cors");
 
 const app = express();
@@ -35,7 +37,8 @@ sequelize
   .then(() => {
     server.listen(port, () => {
       logInfo(`Server đang chạy tại http://localhost:${port}`);
-      start(50);
+      start(17);
+      dailyLotteryJob.start();
     });
   })
   .catch((err) => {

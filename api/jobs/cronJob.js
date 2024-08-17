@@ -7,7 +7,7 @@ const { getTodayDate } = require("../utils/dateUtils");
 
 // Constants
 const API_BASE_URL = process.env.API_BASE_URL;
-const CHECK_TIME = { hours: 22, minutes: 21 };
+const CHECK_TIME = { hours: 23, minutes: 51 };
 const ADD_NUMBER_INTERVAL = 1000; // 1 second
 const MAX_COUNT = 27;
 
@@ -45,12 +45,13 @@ async function createResult(province_id) {
   }
 }
 
-async function addRandomNumber(resultId, fixedLength) {
+async function addRandomNumber(resultId, fixedLength, provinceId) {
   try {
     const value = generateFixedLengthNumber(fixedLength);
     await axios.post(`${API_BASE_URL}/numbers`, {
       value,
       result_id: resultId,
+      province_id: provinceId,
     });
     logInfo("Số đã được thêm:", value);
   } catch (error) {
@@ -68,7 +69,7 @@ async function checkAndCreateResult(provinceId) {
 
     if (response.data.numbers.length === 0) {
       const resultId = await createResult(provinceId);
-      if (resultId) startAddingNumbers(resultId);
+      if (resultId) startAddingNumbers(resultId, provinceId);
     } else {
       logInfo("Kết quả xổ số đã tồn tại!");
     }
@@ -77,12 +78,12 @@ async function checkAndCreateResult(provinceId) {
   }
 }
 
-function startAddingNumbers(resultId) {
+function startAddingNumbers(resultId, provinceId) {
   logInfo("Bắt đầu thêm số ngẫu nhiên mỗi giây");
   let count = 0;
   const interval = setInterval(async () => {
     if (count < MAX_COUNT) {
-      await addRandomNumber(resultId, getValueForIndex(count));
+      await addRandomNumber(resultId, getValueForIndex(count), provinceId);
       count++;
     } else {
       clearInterval(interval);

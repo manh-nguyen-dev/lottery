@@ -7,6 +7,8 @@ import StatisticList from "./components/statistic/list.js";
 import PrizeTable from "./components/prizeTable.js";
 import Calendar from "./components/calendar.js";
 import RegionProvinceRandomSelect from "./components/regionProvinceRandomSelect.js";
+import AdminPrizeTable from "./components/adminPrizeTable.js";
+
 export default function Home({ numbers }) {
   console.log("numbers", numbers);
 
@@ -281,6 +283,7 @@ export default function Home({ numbers }) {
                 </header>
                 <PrizeTable numbers={numbers} />
 
+                <AdminPrizeTable numbers={numbers} />
                 <div className="site-link2">
                   <h4>
                     <a

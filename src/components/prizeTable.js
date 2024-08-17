@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
 
 import "../styles/prizeTable.css";
+import FirstLastTable from "./firstLastTable";
 
 export default function PrizeTable({ numbers }) {
   const [visibleNumbers, setVisibleNumbers] = useState([]);
 
   useEffect(() => {
     let interval;
+    console.log("interval", numbers, visibleNumbers);
     if (visibleNumbers.length < numbers.length) {
       interval = setInterval(() => {
         const value = numbers[visibleNumbers.length];
         setVisibleNumbers((prevNumbers) => [...prevNumbers, value]);
-      }, 3000);
+      }, 1000);
     }
 
     return () => clearInterval(interval);
@@ -128,6 +130,8 @@ export default function PrizeTable({ numbers }) {
         <div>8</div>
         <div>9</div>
       </div>
+
+      <FirstLastTable visibleNumbers={visibleNumbers} />
     </>
   );
 }
