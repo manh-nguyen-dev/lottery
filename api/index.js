@@ -11,6 +11,7 @@ const { logInfo, logError } = require('./utils/logger');
 const { start } = require('./jobs/cronJob');
 const dailyLotteryJob = require('./jobs/dailyLotteryJob');
 const { initWebSocket } = require('./config/socket');
+const cors = require("cors");
 
 const app = express();
 const port = process.env.PORT || 3000;
