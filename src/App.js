@@ -6,12 +6,23 @@ import { API_URL } from "./const/index.js";
 import Dashboard from "./pages/Dashboard.js";
 
 const App = () => {
-  const [trying, setTrying] = useState(false);
+  const [trying, setTrying] = useState(0);
   const [initData, setInitData] = useState(false);
   const [numbers, setNumbers] = useState([]);
   const [ws, setWs] = useState(null);
 
-  const completeRandom = () => {};
+  const completeRandom = async () => {
+    try {
+      setTrying(2);
+      const { data } = await axios.put(
+        `${API_URL}/sessions/${initData.sessionId}/status/completed`
+      );
+
+      console.log(data);
+    } catch {
+      console.log("error fetch numbers");
+    }
+  };
 
   useEffect(() => {
     // Create a WebSocket connection
