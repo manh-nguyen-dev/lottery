@@ -2,62 +2,46 @@ import React, { useEffect, useState } from "react";
 
 import "../styles/prizeTable.css";
 import FirstLastTable from "./firstLastTable";
+import { prizes } from "../const/prizes";
 
 export default function PrizeTable({ numbers }) {
   const [visibleNumbers, setVisibleNumbers] = useState([]);
+  const [selected, setSelected] = useState(0);
+
+  const mapDigits = (values, numberOfDigit) => {
+    return values.map((val, idx) => ({
+      ...val,
+      value: numbers[idx]?.value?.toString().slice(selected),
+    }));
+  };
 
   useEffect(() => {
     let interval;
-    console.log("interval", numbers, visibleNumbers);
     if (visibleNumbers.length < numbers.length) {
       interval = setInterval(() => {
         const value = numbers[visibleNumbers.length];
-        setVisibleNumbers((prevNumbers) => [...prevNumbers, value]);
+        setVisibleNumbers((prevNumbers) => {
+          return mapDigits([...prevNumbers, value], selected);
+        });
       }, 1000);
     }
 
     return () => clearInterval(interval);
   }, [numbers, visibleNumbers]);
 
-  const prizes = [
-    {
-      name: "ĐB",
-      records: [26],
-      className: "flex-row color-red",
-    },
-    {
-      name: "1",
-      records: [0],
-      className: "flex-row bg-blue-light",
-    },
-    {
-      name: "2",
-      records: [1, 2],
-    },
-    {
-      name: "3",
-      records: [3, 4, 5, 6, 7, 8],
-      className: "grid-3  bg-blue-light",
-    },
-    {
-      name: "4",
-      records: [9, 10, 11, 12],
-    },
-    {
-      name: "5",
-      records: [13, 14, 15, 16, 17, 18],
-      className: "grid-3  bg-blue-light",
-    },
-    {
-      name: "6",
-      records: [19, 20, 21],
-    },
-    {
-      name: "7",
-      records: [22, 23, 24, 25],
-      className: "flex-row color-red bg-blue-light",
-    },
+  useEffect(() => {
+    setVisibleNumbers((prevNumbers) => mapDigits(prevNumbers, selected));
+  }, [selected]);
+
+  const choices = [
+    { text: "Đầy đủ", value: 0 },
+    { text: "2 số", value: -2 },
+    { text: "3 số", value: -3 },
   ];
+
+  const onChangeSelected = (e, value) => {
+    setSelected(value);
+  };
 
   return (
     <>
@@ -86,37 +70,21 @@ export default function PrizeTable({ numbers }) {
         </div>
       ))}
       <div className="number-spin">
-        <label className="label-radio labelspin">
-          Đầy đủ{" "}
-          <input
-            className="radio-1"
-            defaultChecked=""
-            name="spinOptions"
-            defaultValue={1}
-            type="radio"
-          />
-          <span className="radio-2" />
-        </label>
-        <label className="label-radio labelspin">
-          2 số{" "}
-          <input
-            className="radio-1"
-            name="spinOptions"
-            defaultValue={2}
-            type="radio"
-          />
-          <span className="radio-2" />
-        </label>
-        <label className="label-radio labelspin">
-          3 số{" "}
-          <input
-            className="radio-1"
-            name="spinOptions"
-            defaultValue={3}
-            type="radio"
-          />
-          <span className="radio-2" />
-        </label>
+        {choices.map((choice, index) => (
+          <label className="label-radio btn-item" key={index}>
+            <input
+              className="radio-1"
+              defaultChecked=""
+              name="spinOptions"
+              defaultValue={1}
+              checked={selected === choice.value}
+              onChange={(e) => onChangeSelected(e, choice.value)}
+              type="radio"
+            />
+            {choice.text}
+            <span className="radio-2" />
+          </label>
+        ))}
       </div>
       <div id="hover-number" className="flex-row">
         <div>0</div>

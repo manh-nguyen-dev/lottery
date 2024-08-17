@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { isSameDay} from 'date-fns';
+import React, { useState } from "react";
+import { isSameDay } from "date-fns";
 
 const Calendar = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -7,7 +7,6 @@ const Calendar = () => {
   const handleDayClick = (day) => {
     const date = new Date(2024, 6, day + 1);
     setSelectedDate(date);
-    console.log(date);
   };
 
   return (
@@ -18,7 +17,7 @@ const Calendar = () => {
             <li>Hai</li>
             <li>Ba</li>
             <li>Tư</li>
-            <li>Năm</li>  
+            <li>Năm</li>
             <li>Sáu</li>
             <li className="red">Bảy</li>
             <li>C.N</li>
@@ -28,9 +27,10 @@ const Calendar = () => {
               <li
                 key={day}
                 className={
-                  selectedDate && isSameDay(new Date(2024, 6, day + 1), selectedDate)
-                    ? 'fc-today active'
-                    : ''
+                  selectedDate &&
+                  isSameDay(new Date(2024, 6, day + 1), selectedDate)
+                    ? "fc-today active"
+                    : ""
                 }
                 onClick={() => handleDayClick(day)}
               >

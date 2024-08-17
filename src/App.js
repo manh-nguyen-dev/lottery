@@ -15,7 +15,6 @@ const App = () => {
         `${API_URL}/draw-results?date=2024-08-16&province_id=5`
       );
       setNumbers(data.numbers);
-      console.log(data);
     } catch {
       console.log("error fetch numbers");
     }
@@ -36,7 +35,6 @@ const App = () => {
         // Parse and handle incoming messages
         const data = JSON.parse(event.data);
         if (data.type === "numberCreated") {
-          console.log(data);
           setNumbers((prevNumbers) => [
             ...prevNumbers,
             { value: data.value, createdAt: data.createdAt },
@@ -65,7 +63,7 @@ const App = () => {
       <div>
         <Routes>
           <Route path="/" element={<Home numbers={numbers} />} />
-          <Route path="/dashboard" element={<Dashboard numbers={numbers}/>} />
+          <Route path="/dashboard" element={<Dashboard numbers={numbers} />} />
         </Routes>
       </div>
     </Router>

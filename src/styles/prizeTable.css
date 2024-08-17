@@ -92,3 +92,8 @@
     background-color: #00918d;
 }
 
+.number-spin {
+    display: flex;
+    justify-content: center;
+    border-top: solid 1px #dddfe2;
+}
