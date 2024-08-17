@@ -73,12 +73,9 @@ export default function FirstLastTable({ visibleNumbers }) {
 
   return (
     <>
-      <div>
+      <div className="frt-lst-table-link">
         <h4>
-          <a
-            title="Bảng Loto Miền Bắc"
-            href="/lo-to-mien-bac/ket-qua-lo-to-mien-bac-p1.html"
-          >
+          <a title="Bảng Loto Miền Bắc" href="#">
             Bảng Loto Miền Bắc
           </a>
         </h4>

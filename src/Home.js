@@ -8,7 +8,14 @@ import PrizeTable from "./components/prizeTable.js";
 import Calendar from "./components/calendar.js";
 import RegionProvinceRandomSelect from "./components/regionProvinceRandomSelect.js";
 
-export default function Home({ numbers, trying, setTrying, completeRandom }) {
+export default function Home({
+  numbers,
+  trying,
+  setTrying,
+  completeRandom,
+  setNumbers,
+  initData,
+}) {
   return (
     <>
       <meta charSet="UTF-8" />
@@ -239,6 +246,7 @@ export default function Home({ numbers, trying, setTrying, completeRandom }) {
                 <RegionProvinceRandomSelect
                   trying={trying}
                   setTrying={setTrying}
+                  setNumbers={setNumbers}
                 />
                 <div id="quaythudate" />
               </div>
@@ -259,13 +267,14 @@ export default function Home({ numbers, trying, setTrying, completeRandom }) {
                     </h3>
                   </div>
                 </header>
-                <PrizeTable numbers={numbers} completeRandom={completeRandom} />
+                <PrizeTable
+                  numbers={numbers}
+                  completeRandom={completeRandom}
+                  initData={initData}
+                />
                 <div className="site-link2">
                   <h4>
-                    <a
-                      title="Bảng Loto Miền Bắc"
-                      href="/lo-to-mien-bac/ket-qua-lo-to-mien-bac-p1.html"
-                    ></a>
+                    <a title="Bảng Loto Miền Bắc" href="#"></a>
                   </h4>
                 </div>
                 <ul className="link-statistic">
@@ -316,14 +325,14 @@ export default function Home({ numbers, trying, setTrying, completeRandom }) {
                 <ul className="post-news">
                   <li>
                     <a
-                      href="/thong-ke-kqxs/binh-luan-kqxsmb-7-8-2024-407-146513.html"
+                      href="#"
                       title="Bình luận KQXSMB 7/8/2024 hôm nay có 17 xuất hiện 3 lần"
                       className="post-thumbnail thumb120"
                     >
                       <img
                         alt="Bình luận KQXSMB 7/8/2024 hôm nay có 17 xuất hiện 3 lần"
                         className="image lazy"
-                        src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs="
+                        src="https://static.xoso.com.vn/medias/standard/2024/08/17/lokep-xsmb-180824-1708231159.jpg"
                         data-src="xoso.com.vn/medias/standard/2024/08/07/binhluan-xsmb-070824-0708184659.jpg"
                       />
                     </a>

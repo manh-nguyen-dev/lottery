@@ -3,7 +3,10 @@
     display: flex;
 }
 
-
+.frt-lst-table-link h4 a{
+    padding: 6px 16px;
+    display: flex;
+}
 
 .first-last-container .first-last-label div {
     height: 32px;
