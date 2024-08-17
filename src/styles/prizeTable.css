@@ -8,6 +8,7 @@
     min-height: 40px;
     border-top: solid 1px #dddfe2;
     border-right: solid 1px #dddfe2;
+    font-family: arial;
 }
 
 .prize-row:last-child {

@@ -3,10 +3,12 @@ import React, { useEffect, useState } from "react";
 import "../styles/prizeTable.css";
 import FirstLastTable from "./firstLastTable";
 import { prizes } from "../const/prizes";
+import RandomNumber from "./randomNumber.js";
 
 export default function PrizeTable({ numbers }) {
   const [visibleNumbers, setVisibleNumbers] = useState([]);
   const [selected, setSelected] = useState(0);
+  const [isSpinning, setIsSpinning] = useState(false);
 
   const mapDigits = (values, numberOfDigit) => {
     return values.map((val, idx) => ({
@@ -17,14 +19,16 @@ export default function PrizeTable({ numbers }) {
 
   useEffect(() => {
     let interval;
-    if (visibleNumbers.length < numbers.length) {
-      interval = setInterval(() => {
+    interval = setInterval(
+      () => {
         const value = numbers[visibleNumbers.length];
         setVisibleNumbers((prevNumbers) => {
           return mapDigits([...prevNumbers, value], selected);
         });
-      }, 1000);
-    }
+        setIsSpinning(true);
+      },
+      isSpinning ? 3000 : 100
+    );
 
     return () => clearInterval(interval);
   }, [numbers, visibleNumbers]);
@@ -62,8 +66,14 @@ export default function PrizeTable({ numbers }) {
                     !visibleNumbers[record]?.value ? "spinning-ball" : ""
                   }
                 >
-                  {visibleNumbers[record]?.value || ""}
+                  {/* {visibleNumbers[record]?.value || ""} */}
                 </div>
+                {visibleNumbers[record]?.value && (
+                  <RandomNumber
+                    number={visibleNumbers[record]?.value}
+                    duration={3000}
+                  />
+                )}
               </div>
             ))}
           </div>
