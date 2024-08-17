@@ -1,4 +1,4 @@
-require('dotenv').config();
+require("dotenv").config();
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -21,17 +21,16 @@ initWebSocket(server);
 
 app.use(bodyParser.json());
 
-// Các routes chính cho ứng dụng
-app.use('/api', lotteryRoutes);
-app.use('/api', provincesRoutes);
-
-// Các routes quản trị viên
-app.use('/api/admin', adminLotteryRoutes);
+// Sử dụng các route
+app.use(cors());
+app.use("/api", lotteryRoutes);
+app.use("/api", provincesRoutes);
 
 // Kết nối cơ sở dữ liệu và khởi động server
-sequelize.authenticate()
+sequelize
+  .authenticate()
   .then(() => {
-    logInfo('Kết nối cơ sở dữ liệu thành công.');
+    logInfo("Kết nối cơ sở dữ liệu thành công.");
     return sequelize.sync();
   })
   .then(() => {
@@ -41,13 +40,12 @@ sequelize.authenticate()
       dailyLotteryJob.start();
     });
   })
-  .catch(err => {
-    logError('Không thể kết nối đến cơ sở dữ liệu:', err.message);
+  .catch((err) => {
+    logError("Không thể kết nối đến cơ sở dữ liệu:", err.message);
   });
 
 // Middleware xử lý lỗi
 app.use((err, req, res, next) => {
   logError(`Lỗi: ${err.message}`);
-  res.status(500).json({ error: 'Đã xảy ra lỗi' });
+  res.status(500).json({ error: "Đã xảy ra lỗi" });
 });
-
