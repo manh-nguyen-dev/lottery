@@ -5,7 +5,7 @@ import FirstLastTable from "./firstLastTable";
 import { prizes } from "../const/prizes";
 import RandomNumber from "./randomNumber.js";
 
-export default function PrizeTable({ numbers }) {
+export default function PrizeTable({ numbers, completeRandom }) {
   const [visibleNumbers, setVisibleNumbers] = useState([]);
   const [selected, setSelected] = useState(0);
   const [isSpinning, setIsSpinning] = useState(false);
@@ -21,11 +21,13 @@ export default function PrizeTable({ numbers }) {
     let interval;
     interval = setInterval(
       () => {
-        const value = numbers[visibleNumbers.length];
-        setVisibleNumbers((prevNumbers) => {
-          return mapDigits([...prevNumbers, value], selected);
-        });
-        setIsSpinning(true);
+        if (numbers.length) {
+          const value = numbers[visibleNumbers.length];
+          setVisibleNumbers((prevNumbers) => {
+            return mapDigits([...prevNumbers, value], selected);
+          });
+          setIsSpinning(true);
+        }
       },
       isSpinning ? 3000 : 100
     );
@@ -84,7 +86,6 @@ export default function PrizeTable({ numbers }) {
           <label className="label-radio btn-item" key={index}>
             <input
               className="radio-1"
-              defaultChecked=""
               name="spinOptions"
               defaultValue={1}
               checked={selected === choice.value}

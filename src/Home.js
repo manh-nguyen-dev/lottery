@@ -8,7 +8,7 @@ import PrizeTable from "./components/prizeTable.js";
 import Calendar from "./components/calendar.js";
 import RegionProvinceRandomSelect from "./components/regionProvinceRandomSelect.js";
 
-export default function Home({ numbers }) {
+export default function Home({ numbers, trying, setTrying, completeRandom }) {
   return (
     <>
       <meta charSet="UTF-8" />
@@ -236,7 +236,10 @@ export default function Home({ numbers }) {
                   người chơi không tham gia các trò chơi biến tướng từ xổ số, vi
                   phạm pháp luật Việt Nam.
                 </p>
-                <RegionProvinceRandomSelect />
+                <RegionProvinceRandomSelect
+                  trying={trying}
+                  setTrying={setTrying}
+                />
                 <div id="quaythudate" />
               </div>
               <div id="quaythumb" className="section-content">
@@ -256,7 +259,7 @@ export default function Home({ numbers }) {
                     </h3>
                   </div>
                 </header>
-                <PrizeTable numbers={numbers} />
+                <PrizeTable numbers={numbers} completeRandom={completeRandom} />
                 <div className="site-link2">
                   <h4>
                     <a

@@ -3,7 +3,7 @@ import { provinces } from "../const/provinces";
 import axios from "axios";
 import { API_URL } from "../const/index.js";
 
-export default function RegionProvinceRandomSelect() {
+export default function RegionProvinceRandomSelect({ trying, setTrying }) {
   const [selected, setSelected] = useState("1");
   useEffect(() => {}, [selected]);
   const onChange = (e, value) => {
@@ -14,12 +14,10 @@ export default function RegionProvinceRandomSelect() {
     { text: "Quay thử theo tỉnh", value: "2" },
   ];
 
-  const [trying, setTrying] = useState(false);
-
   const tryRandom = async () => {
     try {
       setTrying(true);
-      const { data } = await axios.get(`${API_URL}/try-random`);
+      const { data } = await axios.post(`${API_URL}/sessions`);
 
       console.log(data);
     } catch {
@@ -31,7 +29,7 @@ export default function RegionProvinceRandomSelect() {
     <>
       <div className="form-group">
         {choices.map((choice, index) => (
-          <label className="label-radio btn-item" key={index}>
+          <label key={"pro" + index} className="label-radio btn-item">
             <input
               type="radio"
               className="radio-1"
@@ -51,7 +49,9 @@ export default function RegionProvinceRandomSelect() {
           <select id="ddlProvincesQuayThu" onChange={(e) => console.log(e)}>
             <option value="0">Chọn tỉnh thành</option>
             {provinces.map((province, idx) => (
-              <option value={province.id}>{province.name}</option>
+              <option key={"province" + idx} value={province.id}>
+                {province.name}
+              </option>
             ))}
           </select>
         </div>
@@ -60,6 +60,7 @@ export default function RegionProvinceRandomSelect() {
             id="btnStartOrStop"
             className="btn btn-danger"
             onClick={tryRandom}
+            disabled={trying}
           >
             {trying ? "Đang quay thử" : "Quay thử"}
           </button>
