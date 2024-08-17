@@ -18,7 +18,7 @@ const App = () => {
         `${API_URL}/sessions/${initData.sessionId}/status/completed`
       );
 
-      console.log(data);
+      console.log("completeRandom", data);
     } catch {
       console.log("error fetch numbers");
     }
@@ -32,23 +32,26 @@ const App = () => {
       console.log("WebSocket connection established");
     };
 
-    if (numbers.length <= 27) {
-      socket.onmessage = (event) => {
-        // Parse and handle incoming messages
-        const data = JSON.parse(event.data);
-        console.log("in", data);
+    socket.onmessage = (event) => {
+      // Parse and handle incoming messages
+      const data = JSON.parse(event.data);
+      console.log("in", data);
 
-        setInitData(data);
-        if (data.numbers) {
-          setNumbers(
-            data.numbers.map((num) => ({
-              value: num,
-              createdAt: data.createdAt,
-            }))
-          );
-        }
-      };
-    }
+      setInitData(data);
+      if (data.numbers && initData.sessionId !== data.sessionId) {
+        setNumbers([]);
+        setTimeout(
+          () =>
+            setNumbers(
+              data.numbers.map((num) => ({
+                value: num,
+                createdAt: data.createdAt,
+              }))
+            ),
+          numbers.length === 27 ? 3000 : 100
+        );
+      }
+    };
 
     socket.onclose = () => {
       console.log("WebSocket connection closed");
@@ -63,7 +66,7 @@ const App = () => {
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [trying]);
 
   return (
     <Router>
@@ -74,8 +77,10 @@ const App = () => {
             element={
               <Home
                 numbers={numbers}
+                initData={initData}
                 trying={trying}
                 setTrying={setTrying}
+                setNumbers={setNumbers}
                 completeRandom={completeRandom}
               />
             }

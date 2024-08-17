@@ -5,7 +5,11 @@ import FirstLastTable from "./firstLastTable";
 import { prizes } from "../const/prizes";
 import RandomNumber from "./randomNumber.js";
 
-export default function PrizeTable({ numbers, completeRandom = () => {} }) {
+export default function PrizeTable({
+  initData,
+  numbers,
+  completeRandom = () => {},
+}) {
   const [visibleNumbers, setVisibleNumbers] = useState([]);
   const [selected, setSelected] = useState(0);
   const [isSpinning, setIsSpinning] = useState(false);
@@ -18,6 +22,10 @@ export default function PrizeTable({ numbers, completeRandom = () => {} }) {
   };
 
   useEffect(() => {
+    setVisibleNumbers([]);
+  }, [initData.sessionId]);
+
+  useEffect(() => {
     let interval;
     interval = setInterval(
       () => {
@@ -27,6 +35,9 @@ export default function PrizeTable({ numbers, completeRandom = () => {} }) {
             return mapDigits([...prevNumbers, value], selected);
           });
           setIsSpinning(true);
+        } else {
+          setVisibleNumbers([]);
+          setIsSpinning(false);
         }
       },
       isSpinning ? 3000 : 100
@@ -81,6 +92,7 @@ export default function PrizeTable({ numbers, completeRandom = () => {} }) {
                   <RandomNumber
                     number={visibleNumbers[record]?.value}
                     duration={3000}
+                    isSpinning={isSpinning}
                   />
                 )}
               </div>

@@ -3,7 +3,11 @@ import { provinces } from "../const/provinces";
 import axios from "axios";
 import { API_URL } from "../const/index.js";
 
-export default function RegionProvinceRandomSelect({ trying, setTrying }) {
+export default function RegionProvinceRandomSelect({
+  trying,
+  setTrying,
+  setNumbers,
+}) {
   const [selected, setSelected] = useState("1");
   useEffect(() => {}, [selected]);
   const onChange = (e, value) => {
@@ -17,6 +21,7 @@ export default function RegionProvinceRandomSelect({ trying, setTrying }) {
   const tryRandom = async () => {
     try {
       setTrying(1);
+      setNumbers([]);
       const { data } = await axios.post(`${API_URL}/sessions`);
 
       console.log(data);
@@ -60,7 +65,7 @@ export default function RegionProvinceRandomSelect({ trying, setTrying }) {
             id="btnStartOrStop"
             className="btn btn-danger"
             onClick={tryRandom}
-            disabled={trying}
+            disabled={trying === 1}
           >
             {trying === 2
               ? "Quay thử lại"

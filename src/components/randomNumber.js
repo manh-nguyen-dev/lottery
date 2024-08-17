@@ -14,11 +14,14 @@ export default function RandomNumber({ number = "", duration }) {
       setDisplayNumber(generateRandomNumber(number.length));
     }, 100);
 
-    const timeout = setTimeout(() => {
-      clearInterval(interval);
-      setDisplayNumber(number);
-      setIsFinished(true);
-    }, duration);
+    const timeout = setTimeout(
+      () => {
+        clearInterval(interval);
+        setDisplayNumber(number);
+        setIsFinished(true);
+      },
+      !isFinished ? duration : 100
+    );
 
     return () => {
       clearInterval(interval);
