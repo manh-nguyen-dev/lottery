@@ -4,6 +4,7 @@ const { logError, logInfo } = require('../utils/logger');
 
 const PROVINCES = require('../constants/provinces');
 const REGIONS = require('../constants/regions');
+const { WEEK_DAYS_PROVINCES } = require('../constants/date');
 
 // Helper function to handle errors
 function handleError(res, message, error) {
@@ -24,7 +25,7 @@ const createResult = async (req, res) => {
 
 // Hàm để thêm số vào kết quả xổ số
 const createNumber = async (req, res) => {
-    const { value, result_id } = req.body;
+    const { value, result_id, province_id } = req.body;
 
     try {
         const number = await Number.create({ value, result_id });
@@ -32,7 +33,7 @@ const createNumber = async (req, res) => {
         // Emit the created number to all connected clients
         emitNumberCreated({
             value: number.value,
-            provinceId: 0,
+            provinceId: province_id,
             resultId: result_id,
             createdAt: number.createdAt,
         });
@@ -46,16 +47,41 @@ const createNumber = async (req, res) => {
 
 // Hàm để lấy kết quả xổ số theo ngày và tỉnh
 const getResultsByDate = async (req, res) => {
-    const { date, province_id } = req.query;
-    const province = PROVINCES.find(p => p.id === parseInt(province_id));
+    let { date, province_id } = req.query;
 
+    // Nếu cả date và province_id đều null, trả về lỗi
+    if (!date && !province_id) {
+        return res.status(400).json({ error: 'Phải cung cấp ít nhất một trong hai: ngày hoặc tỉnh' });
+    }
+    
+    // Nếu date không được cung cấp, sử dụng ngày hiện tại để xác định tỉnh
     if (!date) {
-        return res.status(400).json({ error: 'Ngày không được cung cấp' });
+        const today = new Date();
+        const dayOfWeek = today.getDay();
+
+        // Lấy ngày xổ số của tỉnh dựa trên province_id
+        const provinceDayOfWeek = parseInt(Object.keys(WEEK_DAYS_PROVINCES).find(key => WEEK_DAYS_PROVINCES[key] == province_id));
+
+        let daysDifference = dayOfWeek - provinceDayOfWeek;
+
+        // Nếu hôm nay là trước ngày xổ số của tỉnh, tính ngày xổ số của tuần trước
+        if (daysDifference < 0) {
+            daysDifference -= 7; // Điều chỉnh để lấy ngày của tuần trước
+        }
+
+        // Lấy ngày xổ số
+        const targetDate = new Date(today);
+        targetDate.setDate(today.getDate() - daysDifference);
+        date = targetDate.toISOString().split('T')[0];
     }
 
-    if (!province) {
-        return res.status(400).json({ error: 'Không có tỉnh thành này' });
+    // Nếu province_id không được cung cấp, xác định nó dựa trên ngày trong tuần
+    if (!province_id) {
+        const dayOfWeek = new Date(date).getDay();
+        province_id = WEEK_DAYS_PROVINCES[dayOfWeek];
     }
+
+    const province = PROVINCES.find(p => p.id === parseInt(province_id));
 
     try {
         const results = await Result.findAll({
