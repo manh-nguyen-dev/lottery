@@ -1,25 +1,12 @@
--- Insert seed data into the 'results' table
-INSERT INTO session (name, draw_date, province_id, createdAt, updatedAt) VALUES
-('Xổ số ngày 2024-08-01', '2024-08-01', 1, NOW(), NOW()),
-('Xổ số ngày 2024-08-02', '2024-08-02', 2, NOW(), NOW()),
-('Xổ số ngày 2024-08-03', '2024-08-03', 1, NOW(), NOW()),
-('Xổ số ngày 2024-08-04', '2024-08-04', 2, NOW(), NOW()),
-('Xổ số ngày 2024-08-05', '2024-08-05', 3, NOW(), NOW()),
-('Xổ số ngày 2024-08-06', '2024-08-06', 1, NOW(), NOW()),
-('Xổ số ngày 2024-08-07', '2024-08-07', 2, NOW(), NOW()),
-('Xổ số ngày 2024-08-08', '2024-08-08', 3, NOW(), NOW()),
-('Xổ số ngày 2024-08-09', '2024-08-09', 1, NOW(), NOW()),
-('Xổ số ngày 2024-08-10', '2024-08-10', 2, NOW(), NOW()),
-('Xổ số ngày 2024-08-11', '2024-08-11', 3, NOW(), NOW()),
-('Xổ số ngày 2024-08-12', '2024-08-12', 1, NOW(), NOW()),
-('Xổ số ngày 2024-08-13', '2024-08-13', 2, NOW(), NOW()),
-('Xổ số ngày 2024-08-14', '2024-08-14', 50, NOW(), NOW());
+INSERT INTO sessions (status, createdAt, updatedAt) 
+VALUES 
+    (1, NOW(), NOW()), -- SCHEDULED (theo giá trị enum)
+    (1, NOW(), NOW()), -- ONGOING
+    (1, NOW(), NOW()), -- SCHEDULED (theo giá trị enum)
+    (1, NOW(), NOW()), -- ONGOING
+    (1, NOW(), NOW()); -- SCHEDULED (theo giá trị enum)
 
--- SHOW
-select * from results;
 
--- Insert seed data into the 'numbers' table
--- Insert seed data into the 'numbers' table for result_id 1
 INSERT INTO numbers (value, session_id) VALUES
 (12345, 1),
 (67890, 1),
@@ -50,7 +37,7 @@ INSERT INTO numbers (value, session_id) VALUES
 (76098, 1);
 
 -- Insert seed data into the 'numbers' table for result_id 2
-INSERT INTO numbers (value, result_id) VALUES
+INSERT INTO numbers (value, session_id) VALUES
 (22345, 2),
 (77890, 2),
 (33456, 2),
@@ -79,8 +66,8 @@ INSERT INTO numbers (value, result_id) VALUES
 (89, 2),
 (86098, 2);
 
--- Insert seed data into the 'numbers' table for result_id 3
-INSERT INTO numbers (value, result_id) VALUES
+-- Insert seed data into the 'numbers' table for session_id 3
+INSERT INTO numbers (value, session_id) VALUES
 (32345, 3),
 (87890, 3),
 (43456, 3),
@@ -109,8 +96,8 @@ INSERT INTO numbers (value, result_id) VALUES
 (90, 3),
 (96098, 3);
 
--- Insert seed data into the 'numbers' table for result_id 4
-INSERT INTO numbers (value, result_id) VALUES
+-- Insert seed data into the 'numbers' table for session_id 4
+INSERT INTO numbers (value, session_id) VALUES
 (42345, 4),
 (97890, 4),
 (53456, 4),
@@ -138,8 +125,8 @@ INSERT INTO numbers (value, result_id) VALUES
 (89, 4),
 (07098, 4);
 
--- Insert seed data into the 'numbers' table for result_id 5
-INSERT INTO numbers (value, result_id) VALUES
+-- Insert seed data into the 'numbers' table for session_id 5
+INSERT INTO numbers (value, session_id) VALUES
 (52345, 5),
 (07890, 5),
 (63456, 5),

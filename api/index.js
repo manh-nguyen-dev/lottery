@@ -4,12 +4,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const http = require('http');
 const sequelize = require('./config/database');
-const lotteryRoutes = require('./routes/lotteryRoutes');
-const provincesRoutes = require('./routes/provincesRoutes');
-const adminLotteryRoutes = require('./routes/adminLotteryRoutes');
+const sessionRoutes = require('./routes/sessionRoutes');
 const { logInfo, logError } = require('./utils/logger');
-const { start } = require('./jobs/cronJob');
-const dailyLotteryJob = require('./jobs/dailyLotteryJob');
 const { initWebSocket } = require('./config/socket');
 const cors = require("cors");
 
@@ -24,9 +20,7 @@ app.use(bodyParser.json());
 
 // Sử dụng các route
 app.use(cors());
-app.use("/api", lotteryRoutes);
-app.use("/api", provincesRoutes);
-app.use("/api/admin", adminLotteryRoutes);
+app.use("/api", sessionRoutes);
 
 // Kết nối cơ sở dữ liệu và khởi động server
 sequelize
@@ -38,8 +32,6 @@ sequelize
   .then(() => {
     server.listen(port, () => {
       logInfo(`Server đang chạy tại http://localhost:${port}`);
-      start(17);
-      dailyLotteryJob.start();
     });
   })
   .catch((err) => {

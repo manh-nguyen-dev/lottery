@@ -15,6 +15,7 @@ button:last-of-type {
 
 
 .button-save {
+    margin-top: 8px;
     background-color: #4caf50;
 }
 
@@ -23,9 +24,14 @@ button:last-of-type {
 }
 
 .button-clear {
+    margin-top: 8px;
     background-color: #f44336;
 }
 
 .button-clear:hover {
     background-color: #da190b;
+}
+
+.button-container {
+    margin-top: 8px;
 }

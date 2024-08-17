@@ -20,17 +20,17 @@ const initWebSocket = (server) => {
     });
 };
 
-const emitNumberCreated = ({ value, provinceId, resultId, createdAt}) => {
+// Function to broadcast messages to all connected clients
+const broadcast = (message) => {
+    logInfo(JSON.stringify(message));
     if (!wss) return;
-
-    const message = JSON.stringify({ type: 'numberCreated', value, provinceId, resultId, createdAt });
 
     wss.clients.forEach((client) => {
         if (client.readyState === WebSocket.OPEN) {
-            logInfo('numberCreated', value, createdAt);
-            client.send(message);
+            logInfo(JSON.stringify(message));
+            client.send(JSON.stringify(message));
         }
     });
 };
 
-module.exports = { initWebSocket, emitNumberCreated };
+module.exports = { initWebSocket, broadcast };

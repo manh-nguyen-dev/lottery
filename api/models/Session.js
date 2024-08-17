@@ -1,22 +1,17 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
+const SESSION_STATUS = require('../enums/sessionStatusEnum');
+const Number = require('./Number');
 
-const Number = sequelize.define('Number', {
+const Session = sequelize.define('Session', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-    value: {
+    status: {
         type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    session_id: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: 'sessions',
-            key: 'id'
-        },
+        defaultValue: SESSION_STATUS.SCHEDULED,
         allowNull: false
     },
     createdAt: {
@@ -29,7 +24,13 @@ const Number = sequelize.define('Number', {
     }
 }, {
     timestamps: true,
-    tableName: 'numbers'
+    tableName: 'sessions'
 });
 
-module.exports = Number;
+// Define the association
+Session.hasMany(Number, {
+  foreignKey: 'session_id',
+  as: 'numbers',
+});
+
+module.exports = Session;

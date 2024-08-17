@@ -1,17 +1,17 @@
 const { Sequelize } = require('sequelize');
 const sequelize = require('../config/database');
 
-// Import các model
-const Result = require('./Result');
+const Session = require('./Session');
 const Number = require('./Number');
 
-// Thiết lập mối quan hệ giữa các model
-Result.hasMany(Number, { foreignKey: 'result_id' });
-Number.belongsTo(Result, { foreignKey: 'result_id' });
+// Thiết lập mối quan hệ giữa các models
+Session.hasMany(Number, { foreignKey: 'session_id' });
+Number.belongsTo(Session, { foreignKey: 'session_id' });
 
-// Xuất các model và sequelize
+// Export các models để sử dụng trong các phần khác của ứng dụng
 module.exports = {
-    sequelize,
-    Result,
-    Number
+  sequelize,
+  Session,
+  Number,
 };
+
