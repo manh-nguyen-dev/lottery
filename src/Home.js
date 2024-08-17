@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-
 import "./styleAll.css";
 import styles from "./styleAll.css";
 import Header from "./components/header.js";
 import Footer from "./components/footer.js";
 import StatisticList from "./components/statistic/list.js";
 import PrizeTable from "./components/prizeTable.js";
-
+import Calendar from "./components/calendar.js";
+import RegionProvinceRandomSelect from "./components/regionProvinceRandomSelect.js";
 export default function Home({ numbers }) {
   console.log("numbers", numbers);
 
@@ -237,27 +237,7 @@ export default function Home({ numbers }) {
                   người chơi không tham gia các trò chơi biến tướng từ xổ số, vi
                   phạm pháp luật Việt Nam.
                 </p>
-                <div className="form-group">
-                  <label className="label-radio btn-item">
-                    Quay thử theo miền{" "}
-                    <input
-                      name="SpinTestTypes"
-                      className="radio-1"
-                      defaultChecked=""
-                      type="radio"
-                    />
-                    <span className="radio-2" />
-                  </label>
-                  <label className="label-radio btn-item">
-                    Quay thử theo tỉnh{" "}
-                    <input
-                      name="SpinTestTypes"
-                      className="radio-1"
-                      type="radio"
-                    />
-                    <span className="radio-2" />
-                  </label>
-                </div>
+                <RegionProvinceRandomSelect/>
                 {/* <div className="form-group">
                   <div className="btn-item">
                     <select
@@ -365,7 +345,7 @@ export default function Home({ numbers }) {
                         alt="Bình luận KQXSMB 7/8/2024 hôm nay có 17 xuất hiện 3 lần"
                         className="image lazy"
                         src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs="
-                        data-src="//static.xoso.com.vn/medias/standard/2024/08/07/binhluan-xsmb-070824-0708184659.jpg"
+                        data-src="xoso.com.vn/medias/standard/2024/08/07/binhluan-xsmb-070824-0708184659.jpg"
                       />
                     </a>
                     <h3 className="description">
@@ -554,10 +534,9 @@ export default function Home({ numbers }) {
                   />
                 </span>
               </div>
-              <div
-                className="widget-container fc-calendar-container"
-                id="calendar"
-              />
+              <div>
+                <Calendar></Calendar>
+              </div>
             </div>
             <div className="hidemobile">
               <div className="widget">
