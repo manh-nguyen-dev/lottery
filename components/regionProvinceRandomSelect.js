@@ -39,9 +39,9 @@ export default function RegionProvinceRandomSelect() {
           <div className="btn-item">
             <select
               id="ddRegionsQuayThu"
-            //   onChange={(e) =>
-            //     e.target.value && (window.location.href = e.target.value)
-            //   }
+            onChange={(e)=>{
+                e.target.value 
+            }}
             >
               <option value="0">Chọn miền</option>
               {REGIONS.map((REGION, idx) => (
