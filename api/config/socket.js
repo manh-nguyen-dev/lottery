@@ -1,4 +1,5 @@
 const WebSocket = require('ws');
+const { v4: uuidv4 } = require('uuid');
 const { logInfo } = require('../utils/logger');
 
 let wss;
@@ -7,28 +8,39 @@ const initWebSocket = (server) => {
     wss = new WebSocket.Server({ server });
 
     wss.on('connection', (ws) => {
-        logInfo('A client connected');
+        // Gán UUID cho mỗi kết nối
+        const userUUID = uuidv4();
+        ws.uuid = userUUID;
+        logInfo(`Client connected with UUID: ${userUUID}`);
 
         ws.on('close', () => {
-            logInfo('Client disconnected');
+            logInfo(`Client disconnected with UUID: ${userUUID}`);
         });
 
-        // Optionally handle messages from clients
         ws.on('message', (message) => {
-            logInfo(`Received message: ${message}`);
+            logInfo(`Received message from UUID ${userUUID}: ${message}`);
         });
     });
+
+    logInfo('WebSocket server initialized');
 };
 
-// Function to broadcast messages to all connected clients
-const broadcast = (message) => {
-    logInfo(JSON.stringify(message));
-    if (!wss) return;
+const broadcast = (message, senderUUID) => {
+    if (!wss) {
+        logInfo('WebSocket server is not initialized');
+        return;
+    }
+
+    const messageWithUUID = {
+        ...message,
+        senderUUID
+    };
+
+    logInfo(`Broadcasting message: ${JSON.stringify(messageWithUUID)}`);
 
     wss.clients.forEach((client) => {
         if (client.readyState === WebSocket.OPEN) {
-            logInfo(JSON.stringify(message));
-            client.send(JSON.stringify(message));
+            client.send(JSON.stringify(messageWithUUID));
         }
     });
 };
