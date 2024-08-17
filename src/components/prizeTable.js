@@ -5,7 +5,7 @@ import FirstLastTable from "./firstLastTable";
 import { prizes } from "../const/prizes";
 import RandomNumber from "./randomNumber.js";
 
-export default function PrizeTable({ numbers, completeRandom }) {
+export default function PrizeTable({ numbers, completeRandom = () => {} }) {
   const [visibleNumbers, setVisibleNumbers] = useState([]);
   const [selected, setSelected] = useState(0);
   const [isSpinning, setIsSpinning] = useState(false);
@@ -31,6 +31,13 @@ export default function PrizeTable({ numbers, completeRandom }) {
       },
       isSpinning ? 3000 : 100
     );
+
+    if (
+      visibleNumbers.length === numbers.length &&
+      visibleNumbers.length === 27
+    ) {
+      setTimeout(completeRandom, 3000);
+    }
 
     return () => clearInterval(interval);
   }, [numbers, visibleNumbers]);

@@ -16,7 +16,7 @@ export default function RegionProvinceRandomSelect({ trying, setTrying }) {
 
   const tryRandom = async () => {
     try {
-      setTrying(true);
+      setTrying(1);
       const { data } = await axios.post(`${API_URL}/sessions`);
 
       console.log(data);
@@ -62,7 +62,11 @@ export default function RegionProvinceRandomSelect({ trying, setTrying }) {
             onClick={tryRandom}
             disabled={trying}
           >
-            {trying ? "Đang quay thử" : "Quay thử"}
+            {trying === 2
+              ? "Quay thử lại"
+              : trying === 1
+              ? "Đang quay thử"
+              : "Quay thử"}
           </button>
         </div>
       </div>
