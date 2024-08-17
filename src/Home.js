@@ -6,7 +6,6 @@ import Header from "./components/header.js";
 import Footer from "./components/footer.js";
 import StatisticList from "./components/statistic/list.js";
 import PrizeTable from "./components/prizeTable.js";
-import AdminPrizeTable from "./components/adminPrizeTable.js";
 
 export default function Home({ numbers }) {
   console.log("numbers", numbers);
@@ -301,8 +300,6 @@ export default function Home({ numbers }) {
                   </div>
                 </header>
                 <PrizeTable numbers={numbers} />
-
-                <AdminPrizeTable numbers={numbers} />
                 <div className="site-link2">
                   <h4>
                     <a

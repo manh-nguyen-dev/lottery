@@ -1,5 +1,6 @@
 const { Number, sequelize } = require('../models');
 const { logError, logInfo } = require('../utils/logger');
+const adminCronJob = require('../jobs/adminCronJob');
 
 // Helper function to handle errors
 const handleError = (res, message, error) => {
@@ -25,6 +26,7 @@ const createNumbersWithExistingResult = async (req, res) => {
         });
 
         logInfo(`Successfully created 27 numbers for result_id ${result_id}`);
+        adminCronJob.start(result_id, numberRecords);
         return res.status(201).json({ result_id, numbers: numberRecords });
     } catch (error) {
         return handleError(res, 'Lỗi khi tạo số cho kết quả xổ số', error);

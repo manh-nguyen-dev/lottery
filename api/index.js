@@ -26,6 +26,7 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use("/api", lotteryRoutes);
 app.use("/api", provincesRoutes);
+app.use("/api/admin", adminLotteryRoutes);
 
 // Kết nối cơ sở dữ liệu và khởi động server
 sequelize

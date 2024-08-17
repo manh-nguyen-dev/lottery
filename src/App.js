@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./Home.js";
 import axios from "axios";
 import { API_URL } from "./const/index.js";
+import Dashboard from "./pages/Dashboard.js";
 
 const App = () => {
   const [numbers, setNumbers] = useState([]);
@@ -59,9 +61,14 @@ const App = () => {
   }, []);
 
   return (
-    <div>
-      <Home numbers={numbers} />
-    </div>
+    <Router>
+      <div>
+        <Routes>
+          <Route path="/" element={<Home numbers={numbers} />} />
+          <Route path="/dashboard" element={<Dashboard numbers={numbers}/>} />
+        </Routes>
+      </div>
+    </Router>
   );
 };
 

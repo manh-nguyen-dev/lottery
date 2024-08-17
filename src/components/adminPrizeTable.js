@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 import "../styles/prizeTable.css";
+import "../styles/adminPrizeTable.css";
+import axios from "axios";
+import { API_URL } from "../const";
 
 export default function AdminPrizeTable({ numbers = [] }) {
   const [filledNumbers, setFilledNumbers] = useState({});
@@ -62,7 +65,32 @@ export default function AdminPrizeTable({ numbers = [] }) {
     }));
   };
 
-  const save = () => {
+  const createNumbersForResult = async (result_id, nums) => {
+    try {
+      if (!result_id) {
+        throw new Error('Result ID is required');
+      }
+      
+      if (typeof nums !== 'object') {
+        throw new Error('Numbers array must have exactly 27 elements');
+      }
+      const numbers = Object.values(nums);
+      
+      const response = await axios.post(`${API_URL}/admin/numbers`, { numbers, result_id});
+  
+      console.log('Successfully created numbers:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error creating numbers:', error.response ? error.response.data : error.message);
+    }
+  };
+
+  const save = async () => {
+    await createNumbersForResult(1,filledNumbers);
+    console.log(filledNumbers);
+  };
+
+  const clear = () => {
     console.log(filledNumbers);
   };
 
@@ -71,9 +99,8 @@ export default function AdminPrizeTable({ numbers = [] }) {
       {prizes.map((prize, idx) => (
         <div
           key={idx}
-          className={`${
-            idx % 2 !== 0 ? "bg-blue-light" : ""
-          } flex-row prize-row`}
+          className={`${idx % 2 !== 0 ? "bg-blue-light" : ""
+            } flex-row prize-row`}
         >
           <span className="prize-name">{prize.name}</span>
 
@@ -94,7 +121,11 @@ export default function AdminPrizeTable({ numbers = [] }) {
           </div>
         </div>
       ))}
-      <button onClick={save}>Save</button>
+      <div className="button-container">
+        <button className="button-save" onClick={save}>Save</button>
+        <button className="button-clear" onClick={clear}>Clear</button>
+      </div>
+
     </>
   );
 }
