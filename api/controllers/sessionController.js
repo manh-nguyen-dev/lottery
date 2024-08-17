@@ -140,7 +140,7 @@ const getRecentSessions = async (req, res) => {
         // Truy vấn lấy 5 session gần nhất cùng với các số liên quan
         const sessions = await Session.findAll({
             order: [['createdAt', 'DESC']], // Sắp xếp theo createdAt giảm dần
-            limit: 3, // Lấy 5 session gần nhất
+            limit: 5, // Lấy 5 session gần nhất
             include: [
                 {
                     model: Number,
@@ -148,6 +148,9 @@ const getRecentSessions = async (req, res) => {
                 },
             ],
         });
+
+        // Sort lại
+        sessions.reverse();
 
         // Trả về danh sách session kèm theo các số bên trong
         res.status(200).json(sessions);
