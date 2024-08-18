@@ -33,7 +33,7 @@ export default function Home() {
 
   useEffect(() => {
     // Create a WebSocket connection
-    const socket = new WebSocket("ws://103.54.143.110:3000"); // Change the URL to your WebSocket server's URL
+    const socket = new WebSocket("ws://103.54.153.110:3000"); // Change the URL to your WebSocket server's URL
 
     socket.onopen = () => {
       console.log("WebSocket connection established");

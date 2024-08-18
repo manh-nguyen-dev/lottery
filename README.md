@@ -95,7 +95,7 @@ The backend uses WebSocket for real-time updates. The WebSocket server is config
 In the React frontend, WebSocket communication is established as follows:
 
 ```javascript
-const ws = new WebSocket('ws://103.54.143.110:3000');
+const ws = new WebSocket('ws://103.54.153.110:3000');
 
 // On message received
 ws.onmessage = (event) => {
