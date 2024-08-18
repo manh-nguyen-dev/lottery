@@ -35,8 +35,6 @@ const createSessionWithNumbers = async (req, res) => {
       ],
     });
 
-    console.log("sec db", targetSession);
-
     // Nếu không tìm thấy session ONGOING, tìm session gần nhất bất kỳ
     if (!targetSession) {
       targetSession = await Session.findOne({
@@ -49,6 +47,26 @@ const createSessionWithNumbers = async (req, res) => {
           },
         ],
       });
+
+      // Tạo Session mới
+      const session = await Session.create({
+        date: new Date(),
+        status: SESSION_STATUS.SCHEDULED,
+      });
+
+      // Tạo các number
+      const numbers = Array.from({ length: 27 }, (_, index) => ({
+        value: generateFixedLengthNumber(getValueForIndex(index)),
+        session_id: session.id,
+      }));
+
+      // Bulk insert các number
+      await Number.bulkCreate(numbers);
+
+      broadcast({
+        event: "clientTryDraw",
+        numbers: numbers,
+      });
     }
 
     if (targetSession) {
@@ -57,26 +75,11 @@ const createSessionWithNumbers = async (req, res) => {
       );
       broadcast({
         event: "numbersList",
-        numbers: numbersList,
+        numbers: targetSession.numbers,
         status: targetSession.status,
         sessionId: targetSession.id,
       });
     }
-
-    // Tạo Session mới
-    const session = await Session.create({
-      date: new Date(),
-      status: SESSION_STATUS.SCHEDULED,
-    });
-
-    // Tạo các number
-    const numbers = Array.from({ length: 27 }, (_, index) => ({
-      value: generateFixedLengthNumber(getValueForIndex(index)),
-      session_id: session.id,
-    }));
-
-    // Bulk insert các number
-    await Number.bulkCreate(numbers);
 
     res.status(201).json();
   } catch (error) {
@@ -215,10 +218,81 @@ const updateNumber = async (req, res) => {
   }
 };
 
+// Hàm cập nhật trạng thái một số theo ID
+const updateNumberStatus = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  try {
+    // Tìm số theo ID
+    const number = await Number.findByPk(id);
+
+    if (!number) {
+      return res.status(404).json({ error: "Number not found" });
+    }
+
+    if (status !== undefined) {
+      number.status = status;
+    }
+
+    // Lưu thay đổi
+    await number.save();
+
+    // Phát sự kiện WebSocket khi client đã show number
+    broadcast({
+      event: "clientReceivedNumber",
+      numberId: id,
+      status: status || SESSION_STATUS.SCHEDULED
+    });
+
+    res.status(200).json({
+      message: "Number status successfully",
+      number,
+    });
+  } catch (error) {
+    console.error("Error updating status of number:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// Hàm cập nhật trạng thái cho nhiều số
+const updateNumbersStatus = async (req, res) => {
+  const { numberIds, status } = req.body;
+
+  try {
+    // Cập nhật trạng thái cho nhiều số
+    const [updatedCount] = await Number.update(
+      { status },
+      {
+        where: { id: numberIds },
+        returning: true,
+      }
+    );
+
+    // Phát sự kiện WebSocket nếu cần
+    broadcast({
+      event: "numbersStatusUpdated",
+      numberIds,
+      status,
+    });
+
+    res.status(200).json({
+      message: `${updatedCount} numbers updated successfully`,
+      numberIds,
+      status,
+    });
+  } catch (error) {
+    console.error("Error updating statuses of numbers:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 module.exports = {
   updateSessionStatusToOngoing,
   updateSessionStatusToCompleted,
   createSessionWithNumbers,
   getRecentSessions,
   updateNumber,
+  updateNumberStatus,
+  updateNumbersStatus,
 };

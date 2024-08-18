@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
+const SESSION_STATUS = require('../enums/sessionStatusEnum');
 
 const Number = sequelize.define('Number', {
     id: {
@@ -9,6 +10,11 @@ const Number = sequelize.define('Number', {
     },
     value: {
         type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    status: {
+        type: DataTypes.INTEGER,
+        defaultValue: SESSION_STATUS.SCHEDULED,
         allowNull: false
     },
     session_id: {

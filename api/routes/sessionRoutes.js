@@ -17,4 +17,10 @@ router.put('/sessions/:id/status/ongoing', sessionController.updateSessionStatus
 // Cập nhật một số theo ID
 router.put('/numbers/:id', sessionController.updateNumber);
 
+// Cập nhật trạng thái của một số
+router.put('/numbers/status/:id', sessionController.updateNumberStatus);
+
+// Cập nhật trạng thái cho danh sách số
+router.put('/update-numbers-status', sessionController.updateNumbersStatus);
+
 module.exports = router;
