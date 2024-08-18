@@ -4,6 +4,8 @@ import "../styles/prizeTable.css";
 import FirstLastTable from "./firstLastTable";
 import { prizes } from "../const/prizes";
 import RandomNumber from "./randomNumber.js";
+import axios from "axios";
+import { API_URL, SESSION_STATUS } from "../const/index.js";
 
 export default function PrizeTable({
   initData,
@@ -21,6 +23,20 @@ export default function PrizeTable({
     }));
   };
 
+  const updateNumberStatus = async (id) => {
+    if (!id) return;
+    try {
+      const { data } = await axios.put(`${API_URL}/numbers/status/${id}`, {
+        status: SESSION_STATUS.COMPLETED,
+        run_socket: true,
+      });
+
+      console.log("updateNumberStatus success", data);
+    } catch {
+      console.log("error fetch numbers");
+    }
+  };
+
   useEffect(() => {
     setVisibleNumbers([]);
   }, [initData.sessionId]);
@@ -31,9 +47,11 @@ export default function PrizeTable({
       () => {
         if (numbers.length) {
           const value = numbers[visibleNumbers.length];
+          updateNumberStatus(value?.id);
           setVisibleNumbers((prevNumbers) => {
             return mapDigits([...prevNumbers, value], selected);
           });
+
           setIsSpinning(true);
         } else {
           setVisibleNumbers([]);

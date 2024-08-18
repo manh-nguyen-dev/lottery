@@ -81,8 +81,6 @@ export default function AdminPrizeTable({
       return val;
     });
 
-    console.log(newValues);
-
     setFilledNumbers(newValues);
   };
 
@@ -100,32 +98,6 @@ export default function AdminPrizeTable({
       console.log("update number success", response);
     } catch (error) {
       console.error("Error update numbers:");
-    }
-  };
-
-  const createNumbersForResult = async (result_id, nums) => {
-    try {
-      if (!result_id) {
-        throw new Error("Result ID is required");
-      }
-
-      if (typeof nums !== "object") {
-        throw new Error("Numbers array must have exactly 27 elements");
-      }
-      const numbers = Object.values(nums);
-
-      const response = await axios.post(`${API_URL}/admin/numbers`, {
-        numbers,
-        result_id,
-      });
-
-      console.log("Successfully created numbers:", response.data);
-      return response.data;
-    } catch (error) {
-      console.error(
-        "Error creating numbers:",
-        error.response ? error.response.data : error.message
-      );
     }
   };
 

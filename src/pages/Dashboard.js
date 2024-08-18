@@ -1,25 +1,10 @@
 import AdminPrizeTable from "../components/adminPrizeTable";
-import { provinces } from "../const/provinces";
-import { WEEK_DAYS_PROVINCES } from "../const/date";
 import "../styles/dashboard.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { API_URL, SESSION_STATUS } from "../const/index.js";
-
-const getProvinceByDay = () => {
-  const today = new Date().getDay();
-  const provinceId = WEEK_DAYS_PROVINCES[today];
-  return provinceId;
-};
-
-const getProvinceName = (provinceId) => {
-  const province = provinces.find((p) => p.id === provinceId);
-  return province ? province.name : "Unknown";
-};
+import { API_URL } from "../const/index.js";
 
 const Dashboard = () => {
-  const provinceId = getProvinceByDay();
-  const provinceName = getProvinceName(provinceId);
   const [ws, setWs] = useState(null);
 
   const [numbersList, setNumbersList] = useState([

@@ -48,13 +48,7 @@ export default function Home() {
       if (data.numbers) {
         setNumbers([]);
         setTimeout(
-          () =>
-            setNumbers(
-              data.numbers.map((num) => ({
-                value: num,
-                createdAt: data.createdAt,
-              }))
-            ),
+          () => setNumbers(data.numbers),
           numbers.length === 27 ? 3000 : 100
         );
       }
@@ -70,6 +64,7 @@ export default function Home() {
     return () => {
       if (socket) {
         console.log("un mount");
+        initData.sessionId && completeRandom();
         socket.close();
       }
     };
