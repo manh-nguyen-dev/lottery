@@ -44,8 +44,9 @@ export default function Home() {
       const data = JSON.parse(event.data);
       console.log("in", data);
 
-      setInitData(data);
       if (data.numbers) {
+        setInitData(data);
+
         setNumbers([]);
         setTimeout(
           () => setNumbers(data.numbers),
