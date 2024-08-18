@@ -48,13 +48,7 @@ export default function Home() {
       if (data.numbers) {
         setNumbers([]);
         setTimeout(
-          () =>
-            setNumbers(
-              data.numbers.map((num) => ({
-                value: num,
-                createdAt: data.createdAt,
-              }))
-            ),
+          () => setNumbers(data.numbers),
           numbers.length === 27 ? 3000 : 100
         );
       }

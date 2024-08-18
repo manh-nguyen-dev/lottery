@@ -74,12 +74,9 @@ const createSessionWithNumbers = async (req, res) => {
     }
 
     if (targetSession) {
-      const numbersList = targetSession.numbers.map(
-        (num) => num.dataValues.value
-      );
       broadcast({
         event: "numbersList",
-        numbers: numbersList,
+        numbers: targetSession.numbers,
         status: targetSession.status,
         sessionId: targetSession.id,
       });
@@ -254,12 +251,9 @@ const updateNumber = async (req, res) => {
       });
 
       if (targetSession) {
-        const numbersList = targetSession.numbers.map(
-          (num) => num.dataValues.value
-        );
         broadcast({
           event: "numbersList",
-          numbers: numbersList,
+          numbers: targetSession.numbers,
           status: targetSession.status,
           sessionId: targetSession.id,
         });
@@ -300,7 +294,7 @@ const updateNumberStatus = async (req, res) => {
     broadcast({
       event: "clientReceivedNumber",
       numberId: id,
-      status: status || SESSION_STATUS.SCHEDULED
+      status: status || SESSION_STATUS.SCHEDULED,
     });
 
     res.status(200).json({
