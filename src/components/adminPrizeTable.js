@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from "react";
-
 import "../styles/prizeTable.css";
 import "../styles/adminPrizeTable.css";
 import axios from "axios";
 import { API_URL } from "../const";
+import { getMaxLengthForIndex } from "../utils/digit";
 
-export default function AdminPrizeTable({ numbers = [] }) {
-  const [filledNumbers, setFilledNumbers] = useState({});
+export default function AdminPrizeTable({
+  numbers = [],
+  autoDisabled = true,
+  timeRendered,
+}) {
+  const [filledNumbers, setFilledNumbers] = useState([]);
+  const [completedNumberIdxes, setCompletedNumberIdxes] = useState([]);
 
   useEffect(() => {
+    if (autoDisabled) {
+      setCompletedNumberIdxes(numbers.map((_, idx) => idx));
+    } else {
+    }
+
     for (let i = 0; i < numbers.length; i++) {
-      setFilledNumbers((prevNumbers) => ({
-        ...prevNumbers,
-        ...{ [i]: numbers[i] },
-      }));
+      setFilledNumbers(numbers);
     }
   }, [numbers]);
 
@@ -58,35 +65,52 @@ export default function AdminPrizeTable({ numbers = [] }) {
   ];
 
   const handleInputChange = (e, record) => {
-    console.log(e, record);
-    setFilledNumbers((prevNumbers) => ({
-      ...prevNumbers,
-      ...{ [record]: e?.target.value },
-    }));
+    if (e?.target.value?.length > getMaxLengthForIndex(record)) return;
+
+    const newValues = filledNumbers.map((val, idx) => {
+      if (idx === record) {
+        return {
+          ...val,
+          ...{ value: e?.target.value },
+        };
+      }
+
+      return val;
+    });
+
+    console.log(newValues);
+
+    setFilledNumbers(newValues);
   };
 
   const createNumbersForResult = async (result_id, nums) => {
     try {
       if (!result_id) {
-        throw new Error('Result ID is required');
+        throw new Error("Result ID is required");
       }
-      
-      if (typeof nums !== 'object') {
-        throw new Error('Numbers array must have exactly 27 elements');
+
+      if (typeof nums !== "object") {
+        throw new Error("Numbers array must have exactly 27 elements");
       }
       const numbers = Object.values(nums);
-      
-      const response = await axios.post(`${API_URL}/admin/numbers`, { numbers, result_id});
-  
-      console.log('Successfully created numbers:', response.data);
+
+      const response = await axios.post(`${API_URL}/admin/numbers`, {
+        numbers,
+        result_id,
+      });
+
+      console.log("Successfully created numbers:", response.data);
       return response.data;
     } catch (error) {
-      console.error('Error creating numbers:', error.response ? error.response.data : error.message);
+      console.error(
+        "Error creating numbers:",
+        error.response ? error.response.data : error.message
+      );
     }
   };
 
   const save = async () => {
-    await createNumbersForResult(1,filledNumbers);
+    await createNumbersForResult(1, filledNumbers);
     console.log(filledNumbers);
   };
 
@@ -99,22 +123,28 @@ export default function AdminPrizeTable({ numbers = [] }) {
       {prizes.map((prize, idx) => (
         <div
           key={idx}
-          className={`${idx % 2 !== 0 ? "bg-blue-light" : ""
-            } flex-row prize-row`}
+          className={`${
+            idx % 2 !== 0 ? "bg-blue-light" : ""
+          } flex-row prize-row`}
         >
           <span className="prize-name">{prize.name}</span>
 
           <div className={prize.className || "flex-row"}>
             {prize.records.map((record, rIdx) => (
               <div key={rIdx} className="prize-number">
-                {!filledNumbers[record]?.value ? (
+                {filledNumbers[record]?.value && (
                   <input
                     type="number"
-                    value={filledNumbers[record] || ""}
+                    value={filledNumbers[record]?.value || ""}
                     onChange={(value) => handleInputChange(value, record)}
+                    // onBlur={handleSaveNumber}
+                    disabled={
+                      autoDisabled ||
+                      Date.now() >
+                        new Date(timeRendered)?.getTime() + 6000 * record
+                    }
+                    maxLength={getMaxLengthForIndex(record)}
                   />
-                ) : (
-                  <div>{filledNumbers[record]?.value || ""}</div>
                 )}
               </div>
             ))}
@@ -122,10 +152,13 @@ export default function AdminPrizeTable({ numbers = [] }) {
         </div>
       ))}
       <div className="button-container">
-        <button className="button-save" onClick={save}>Save</button>
-        <button className="button-clear" onClick={clear}>Clear</button>
+        <button className="button-save" onClick={save}>
+          Save
+        </button>
+        <button className="button-clear" onClick={clear}>
+          Clear
+        </button>
       </div>
-
     </>
   );
 }
