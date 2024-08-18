@@ -2,13 +2,16 @@ import React, { useEffect, useState } from "react";
 import "../styles/prizeTable.css";
 import "../styles/adminPrizeTable.css";
 import axios from "axios";
-import { API_URL } from "../const";
+import { API_URL, SESSION_STATUS } from "../const";
 import { getMaxLengthForIndex } from "../utils/digit";
 
 export default function AdminPrizeTable({
   numbers = [],
   autoDisabled = true,
+  setNumbersList,
+  sessionStatus,
   timeRendered,
+  sessionId,
 }) {
   const [filledNumbers, setFilledNumbers] = useState([]);
   const [completedNumberIdxes, setCompletedNumberIdxes] = useState([]);
@@ -83,6 +86,23 @@ export default function AdminPrizeTable({
     setFilledNumbers(newValues);
   };
 
+  const handleInputBlur = async (e, record, numberId) => {
+    if (e?.target.value?.length < getMaxLengthForIndex(record)) return;
+
+    try {
+      console.log(e);
+      const response = await axios.put(`${API_URL}/numbers/${numberId}`, {
+        value: e?.target.value,
+        session_id: sessionId,
+        run_socket: true,
+      });
+
+      console.log("update number success", response);
+    } catch (error) {
+      console.error("Error update numbers:");
+    }
+  };
+
   const createNumbersForResult = async (result_id, nums) => {
     try {
       if (!result_id) {
@@ -109,15 +129,6 @@ export default function AdminPrizeTable({
     }
   };
 
-  const save = async () => {
-    await createNumbersForResult(1, filledNumbers);
-    console.log(filledNumbers);
-  };
-
-  const clear = () => {
-    console.log(filledNumbers);
-  };
-
   return (
     <>
       {prizes.map((prize, idx) => (
@@ -137,11 +148,14 @@ export default function AdminPrizeTable({
                     type="number"
                     value={filledNumbers[record]?.value || ""}
                     onChange={(value) => handleInputChange(value, record)}
-                    // onBlur={handleSaveNumber}
+                    onBlur={(value) =>
+                      handleInputBlur(value, record, filledNumbers[record]?.id)
+                    }
                     disabled={
                       autoDisabled ||
-                      Date.now() >
-                        new Date(timeRendered)?.getTime() + 6000 * record
+                      (Date.now() >
+                        new Date(timeRendered)?.getTime() + 6000 * record &&
+                        sessionStatus === SESSION_STATUS.ONGOING)
                     }
                     maxLength={getMaxLengthForIndex(record)}
                   />
@@ -151,14 +165,6 @@ export default function AdminPrizeTable({
           </div>
         </div>
       ))}
-      <div className="button-container">
-        <button className="button-save" onClick={save}>
-          Save
-        </button>
-        <button className="button-clear" onClick={clear}>
-          Clear
-        </button>
-      </div>
     </>
   );
 }
