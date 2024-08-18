@@ -70,6 +70,7 @@ export default function Home() {
     return () => {
       if (socket) {
         console.log("un mount");
+        initData.sessionId && completeRandom();
         socket.close();
       }
     };

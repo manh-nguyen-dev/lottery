@@ -52,7 +52,7 @@ const createSessionWithNumbers = async (req, res) => {
       });
 
       hasNoOnGoing &&
-        updateSessionStatus(targetSession.id, SESSION_STATUS.ONGOING);
+        (await updateSessionStatus(targetSession.id, SESSION_STATUS.ONGOING));
     }
 
     // Tạo Session mới

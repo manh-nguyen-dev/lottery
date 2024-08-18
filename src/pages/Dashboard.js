@@ -1,5 +1,4 @@
 import AdminPrizeTable from "../components/adminPrizeTable";
-import { provinces } from "../const/provinces";
 import { WEEK_DAYS_PROVINCES } from "../const/date";
 import "../styles/dashboard.css";
 import React, { useEffect, useState } from "react";
@@ -12,14 +11,7 @@ const getProvinceByDay = () => {
   return provinceId;
 };
 
-const getProvinceName = (provinceId) => {
-  const province = provinces.find((p) => p.id === provinceId);
-  return province ? province.name : "Unknown";
-};
-
 const Dashboard = () => {
-  const provinceId = getProvinceByDay();
-  const provinceName = getProvinceName(provinceId);
   const [ws, setWs] = useState(null);
 
   const [numbersList, setNumbersList] = useState([
