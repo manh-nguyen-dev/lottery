@@ -20,6 +20,7 @@ const getProvinceName = (provinceId) => {
 const Dashboard = () => {
   const provinceId = getProvinceByDay();
   const provinceName = getProvinceName(provinceId);
+  const [ws, setWs] = useState(null);
 
   const [numbersList, setNumbersList] = useState([
     [
@@ -276,9 +277,6 @@ const Dashboard = () => {
   const loadNumbersList = async () => {
     try {
       const { data } = await axios.get(`${API_URL}/admin/sessions/recent`);
-
-      console.log("data", data);
-
       setNumbersList(data);
 
       console.log("completeRandom", data);
@@ -292,15 +290,49 @@ const Dashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    // Create a WebSocket connection
+    const socket = new WebSocket("ws://localhost:3000"); // Change the URL to your WebSocket server's URL
+
+    socket.onopen = () => {
+      console.log("WebSocket connection established");
+    };
+
+    socket.onmessage = (event) => {
+      // Parse and handle incoming messages
+      const data = JSON.parse(event.data);
+      console.log("in admin", data);
+      loadNumbersList();
+    };
+
+    socket.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
+
+    setWs(socket);
+
+    // Cleanup on component unmount
+    return () => {
+      if (socket) {
+        console.log("un mount");
+        socket.close();
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="dashboardContainer">
       {numbersList.map((obj, idx) => (
-        <div key={`${idx}_number_list`} className="adminPrizeTable">
+        <div key={`${idx}_number_list_${obj.id}`} className="adminPrizeTable">
           <h4>Phiên {idx + 1}</h4>
           <AdminPrizeTable
             numbers={obj.numbers}
-            autoDisabled={idx !== 4}
+            sessionStatus={obj.status}
+            sessionId={obj.id}
+            autoDisabled={idx < 4}
             timeRendered={obj.updatedAt}
+            setNumbersList={setNumbersList}
           />
         </div>
       ))}
