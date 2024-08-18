@@ -18,7 +18,7 @@ services:
   frontend:
     build: ./frontend
     ports:
-      - "81:80"
+      - "8081:80"
     networks:
       - app-network
     depends_on:

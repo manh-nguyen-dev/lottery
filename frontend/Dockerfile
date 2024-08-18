@@ -26,7 +26,7 @@ COPY --from=build /app/build /usr/share/nginx/html
 COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
 
 # Expose port 81
-EXPOSE 81
+EXPOSE 8081
 
 # Start Nginx server
 CMD ["nginx", "-g", "daemon off;"]
