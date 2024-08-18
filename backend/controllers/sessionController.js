@@ -22,73 +22,21 @@ function getValueForIndex(index) {
 
 // Hàm tạo mới session cùng với các number
 const createSessionWithNumbers = async (req, res) => {
-  try {
-    let hasNoOnGoing = true;
-    // Tìm session gần nhất với trạng thái ONGOING
-    let targetSession = await Session.findOne({
-      where: { status: SESSION_STATUS.ONGOING },
-      order: [["updatedAt", "DESC"]],
-      include: [
-        {
-          model: Number,
-          as: "numbers",
-        },
-      ],
-    });
+  const session = await Session.create({
+    date: new Date(),
+    status: SESSION_STATUS.SCHEDULED,
+  });
 
-    console.log("sec db", targetSession);
-    hasNoOnGoing = !Boolean(targetSession);
-    // Nếu không tìm thấy session ONGOING, tìm session gần nhất bất kỳ
-    if (!targetSession) {
-      targetSession = await Session.findOne({
-        where: { status: SESSION_STATUS.SCHEDULED },
-        order: [["updatedAt", "DESC"]],
-        include: [
-          {
-            model: Number,
-            as: "numbers",
-          },
-        ],
-      });
+  // Tạo các number
+  const numbers = Array.from({ length: 27 }, (_, index) => ({
+    value: generateFixedLengthNumber(getValueForIndex(index)),
+    session_id: session.id,
+  }));
 
-      hasNoOnGoing &&
-        (await updateSessionStatus(targetSession.id, SESSION_STATUS.ONGOING));
-    }
+  // Bulk insert các number
+  await Number.bulkCreate(numbers);
 
-    // Tạo Session mới
-
-    if (hasNoOnGoing) {
-      const session = await Session.create({
-        date: new Date(),
-        status: SESSION_STATUS.SCHEDULED,
-      });
-
-      // Tạo các number
-      const numbers = Array.from({ length: 27 }, (_, index) => ({
-        value: generateFixedLengthNumber(getValueForIndex(index)),
-        session_id: session.id,
-      }));
-
-      // Bulk insert các number
-      await Number.bulkCreate(numbers);
-    }
-
-    if (targetSession) {
-      broadcast({
-        event: "numbersList",
-        numbers: targetSession.numbers,
-        status: targetSession.status,
-        sessionId: targetSession.id,
-      });
-    }
-
-    res.status(201).json();
-  } catch (error) {
-    console.error("Error creating session with numbers:", error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while creating the session" });
-  }
+  res.status(201).json();
 };
 
 // Hàm cập nhật trạng thái session thành ONGOING
