@@ -2,8 +2,8 @@ button {
     border: none;
     border-radius: 4px;
     color: white;
-    font-size: 16px;
-    padding: 10px 20px;
+    font-size: 14px;
+    padding: 6px 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
     margin-right: 10px;
@@ -34,4 +34,13 @@ button:last-of-type {
 
 .button-container {
     margin-top: 8px;
+}
+
+.prize-number  input {
+    text-align: center;
+}
+
+
+.prize-number  input:disabled {
+   cursor: not-allowed;
 }

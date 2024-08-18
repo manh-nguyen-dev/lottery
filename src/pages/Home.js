@@ -1,21 +1,81 @@
 import React, { useEffect, useState } from "react";
-import "./styleAll.css";
-import styles from "./styleAll.css";
-import Header from "./components/header.js";
-import Footer from "./components/footer.js";
-import StatisticList from "./components/statistic/list.js";
-import PrizeTable from "./components/prizeTable.js";
-import Calendar from "./components/calendar.js";
-import RegionProvinceRandomSelect from "./components/regionProvinceRandomSelect.js";
+import "../styleAll.css";
+import styles from "../styleAll.css";
+import Header from "../components/header.js";
+import Footer from "../components/footer.js";
+import StatisticList from "../components/statistic/list.js";
+import PrizeTable from "../components/prizeTable.js";
+import Calendar from "../components/calendar.js";
+import RegionProvinceRandomSelect from "../components/regionProvinceRandomSelect.js";
+import axios from "axios";
+import { API_URL, SESSION_STATUS } from "../const/index.js";
 
-export default function Home({
-  numbers,
-  trying,
-  setTrying,
-  completeRandom,
-  setNumbers,
-  initData,
-}) {
+export default function Home() {
+  const [trying, setTrying] = useState(0);
+  const [initData, setInitData] = useState(false);
+  const [numbers, setNumbers] = useState([]);
+  const [ws, setWs] = useState(null);
+
+  const completeRandom = async () => {
+    try {
+      setTrying(2);
+      const { data } = await axios.put(
+        `${API_URL}/sessions/${initData.sessionId}/status/completed`
+      );
+
+      setInitData((pre) => ({ ...pre, status: SESSION_STATUS.COMPLETED }));
+
+      console.log("completeRandom", data);
+    } catch {
+      console.log("error fetch numbers");
+    }
+  };
+
+  useEffect(() => {
+    // Create a WebSocket connection
+    const socket = new WebSocket("ws://localhost:3000"); // Change the URL to your WebSocket server's URL
+
+    socket.onopen = () => {
+      console.log("WebSocket connection established");
+    };
+
+    socket.onmessage = (event) => {
+      // Parse and handle incoming messages
+      const data = JSON.parse(event.data);
+      console.log("in", data);
+
+      setInitData(data);
+      if (data.numbers) {
+        setNumbers([]);
+        setTimeout(
+          () =>
+            setNumbers(
+              data.numbers.map((num) => ({
+                value: num,
+                createdAt: data.createdAt,
+              }))
+            ),
+          numbers.length === 27 ? 3000 : 100
+        );
+      }
+    };
+
+    socket.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
+
+    setWs(socket);
+
+    // Cleanup on component unmount
+    return () => {
+      if (socket) {
+        console.log("un mount");
+        socket.close();
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
       <meta charSet="UTF-8" />
