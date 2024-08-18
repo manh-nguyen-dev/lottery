@@ -23,6 +23,7 @@ function getValueForIndex(index) {
 // Hàm tạo mới session cùng với các number
 const createSessionWithNumbers = async (req, res) => {
   try {
+    let hasNoOnGoing = true;
     // Tìm session gần nhất với trạng thái ONGOING
     let targetSession = await Session.findOne({
       where: { status: SESSION_STATUS.ONGOING },
@@ -35,6 +36,8 @@ const createSessionWithNumbers = async (req, res) => {
       ],
     });
 
+    console.log("sec db", targetSession);
+    hasNoOnGoing = !Boolean(targetSession);
     // Nếu không tìm thấy session ONGOING, tìm session gần nhất bất kỳ
     if (!targetSession) {
       targetSession = await Session.findOne({
@@ -48,7 +51,13 @@ const createSessionWithNumbers = async (req, res) => {
         ],
       });
 
-      // Tạo Session mới
+      hasNoOnGoing &&
+        updateSessionStatus(targetSession.id, SESSION_STATUS.ONGOING);
+    }
+
+    // Tạo Session mới
+
+    if (hasNoOnGoing) {
       const session = await Session.create({
         date: new Date(),
         status: SESSION_STATUS.SCHEDULED,
@@ -62,11 +71,6 @@ const createSessionWithNumbers = async (req, res) => {
 
       // Bulk insert các number
       await Number.bulkCreate(numbers);
-
-      broadcast({
-        event: "clientTryDraw",
-        numbers: numbers,
-      });
     }
 
     if (targetSession) {
@@ -75,7 +79,7 @@ const createSessionWithNumbers = async (req, res) => {
       );
       broadcast({
         event: "numbersList",
-        numbers: targetSession.numbers,
+        numbers: numbersList,
         status: targetSession.status,
         sessionId: targetSession.id,
       });
@@ -122,6 +126,22 @@ const updateSessionStatusToOngoing = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+// Hàm cập nhật trạng thái session thành
+const updateSessionStatus = async (sessionId, status) => {
+  try {
+    // Tìm session theo ID
+    const session = await Session.findByPk(sessionId);
+
+    if (!session) {
+      return;
+    }
+
+    session.status = status;
+    await session.save();
+  } catch (error) {
+    console.error("Error updating session status:", error);
+  }
+};
 
 // Hàm cập nhật trạng thái session thành COMPLETED
 const updateSessionStatusToCompleted = async (req, res) => {
@@ -162,9 +182,22 @@ const updateSessionStatusToCompleted = async (req, res) => {
 const getRecentSessions = async (req, res) => {
   try {
     // Truy vấn lấy 5 session gần nhất cùng với các số liên quan
+    let targetSession = await Session.findOne({
+      where: { status: SESSION_STATUS.ONGOING },
+      order: [["updatedAt", "DESC"]],
+      include: [
+        {
+          model: Number,
+          as: "numbers",
+        },
+      ],
+    });
+
+    console.log("targetSession rec", targetSession, targetSession ? 6 : 5);
+
     const sessions = await Session.findAll({
       order: [["createdAt", "DESC"]], // Sắp xếp theo createdAt giảm dần
-      limit: 5, // Lấy 5 session gần nhất
+      limit: targetSession ? 6 : 5, // Lấy 5 session gần nhất
       include: [
         {
           model: Number,
@@ -187,7 +220,7 @@ const getRecentSessions = async (req, res) => {
 // Hàm cập nhật một số theo ID
 const updateNumber = async (req, res) => {
   const { id } = req.params;
-  const { value, session_id } = req.body;
+  const { value, session_id, run_socket } = req.body;
 
   try {
     // Tìm số theo ID
@@ -207,6 +240,31 @@ const updateNumber = async (req, res) => {
 
     // Lưu thay đổi
     await number.save();
+
+    if (run_socket) {
+      let targetSession = await Session.findOne({
+        where: { status: SESSION_STATUS.ONGOING },
+        order: [["createdAt", "DESC"]],
+        include: [
+          {
+            model: Number,
+            as: "numbers",
+          },
+        ],
+      });
+
+      if (targetSession) {
+        const numbersList = targetSession.numbers.map(
+          (num) => num.dataValues.value
+        );
+        broadcast({
+          event: "numbersList",
+          numbers: numbersList,
+          status: targetSession.status,
+          sessionId: targetSession.id,
+        });
+      }
+    }
 
     res.status(200).json({
       message: "Number updated successfully",

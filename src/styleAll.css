@@ -7163,3 +7163,19 @@ tr.tansuatrow.bg-active .bg-info {
 #btnStartOrStop {
   text-wrap: nowrap;
 }
+
+.caleandar-days{
+  border-left: 1px solid #e0e0e0;
+}
+
+.caleandar-days li{
+  border-right: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  border-left: none !important;
+  border-top: none !important;
+}
+
+.caleandar-weks {
+  border-bottom: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
+}
