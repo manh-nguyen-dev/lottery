@@ -1,70 +1,122 @@
-# Getting Started with Create React App
+Here's a template for your project's README file. Feel free to customize it according to your specific needs:
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+---
 
-## Available Scripts
+# Lottery Application
 
-In the project directory, you can run:
+This project is a lottery management system developed using Node.js, React, and MySQL. It includes backend and frontend components, with WebSocket support for real-time updates.
 
-### `npm start`
+## Table of Contents
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Setup Instructions](#setup-instructions)
+- [Docker Setup](#docker-setup)
+- [API Endpoints](#api-endpoints)
+- [WebSocket Integration](#websocket-integration)
+- [Contributing](#contributing)
+- [License](#license)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Features
 
-### `npm test`
+- **Backend**: Node.js with Express, Sequelize for ORM, and MySQL for the database.
+- **Frontend**: React application served with Nginx.
+- **Real-time Updates**: WebSocket integration for live notifications.
+- **Docker**: Containerization for easy deployment and management.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Technologies Used
 
-### `npm run build`
+- **Backend**: Node.js, Express, Sequelize, MySQL
+- **Frontend**: React, Nginx
+- **WebSocket**: `ws` library for real-time communication
+- **Docker**: For containerization
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Setup Instructions
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Prerequisites
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Docker
+- Docker Compose
 
-### `npm run eject`
+### Local Development
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. **Clone the repository:**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    ```bash
+    git clone https://github.com/manh-nguyen-dev/lottery-app.git
+    cd lottery
+    ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+2. **Install dependencies:**
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+    - For the backend:
 
-## Learn More
+        ```bash
+        cd backend
+        npm install
+        ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+    - For the frontend:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+        ```bash
+        cd ../frontend
+        npm install
+        ```
 
-### Code Splitting
+3. **Run the application:**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+    ```bash
+    docker-compose up --build
+    ```
 
-### Analyzing the Bundle Size
+    This command will build the Docker images and start the services defined in the `docker-compose.yml` file.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Docker Setup
 
-### Making a Progressive Web App
+- **Backend**: The backend service runs on port `3000`.
+- **Frontend**: The frontend service runs on port `80`.
+- **MySQL**: The MySQL service runs on port `3308`, with the database accessible via `mysql:3306`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## API Endpoints
 
-### Advanced Configuration
+- **GET /api/results**: Retrieve results by date.
+- **POST /api/results**: Create a new result.
+- **GET /api/sessions**: Retrieve the most recent sessions.
+- **POST /api/sessions**: Create a new session.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Refer to the [backend documentation](./backend/README.md) for detailed API information.
 
-### Deployment
+## WebSocket Integration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+The backend uses WebSocket for real-time updates. The WebSocket server is configured to listen for connections and broadcast messages to all connected clients.
 
-### `npm run build` fails to minify
+### Client-Side WebSocket
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+In the React frontend, WebSocket communication is established as follows:
+
+```javascript
+const ws = new WebSocket('ws://localhost:3000');
+
+// On message received
+ws.onmessage = (event) => {
+    const message = JSON.parse(event.data);
+    console.log('Message received:', message);
+};
+
+// On error
+ws.onerror = (error) => {
+    console.error('WebSocket error:', error);
+};
+```
+
+## Contributing
+
+Contributions are welcome! Please submit a pull request or open an issue if you have suggestions or find bugs.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+Feel free to adjust any sections based on the specifics of your project or any additional features you may have.
