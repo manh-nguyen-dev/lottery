@@ -25,8 +25,8 @@ COPY --from=build /app/build /usr/share/nginx/html
 # Copy file cấu hình Nginx
 COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
 
-# Expose port 80
-EXPOSE 80
+# Expose port 81
+EXPOSE 81
 
 # Start Nginx server
 CMD ["nginx", "-g", "daemon off;"]
