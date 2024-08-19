@@ -32,14 +32,14 @@ const initWebSocket = (server) => {
     });
 
     ws.on("message", (message) => {
+      logInfo(`Received message from UUID ${userUUID}: ${message}`);
       if (messageString === "admin") {
         console.log("Admin client connected");
         adminClients.push(ws);
       } else {
+        console.log("user client connected");
         userClients.push(ws);
       }
-
-      logInfo(`Received message from UUID ${userUUID}: ${message}`);
     });
 
     ws.on("error", () => {
@@ -74,6 +74,7 @@ const broadcast = async (message, senderUUID) => {
 const broadcastLotteryDataToUsers = (message, senderUUID) => {
   const messageWithUUID = {
     ...message,
+    userClients,
     senderUUID,
   };
 
@@ -87,6 +88,7 @@ const broadcastLotteryDataToUsers = (message, senderUUID) => {
 const broadcastLotteryDataToAdmins = (message, senderUUID) => {
   const messageWithUUID = {
     ...message,
+    adminClients,
     senderUUID,
   };
 
