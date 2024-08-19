@@ -210,9 +210,6 @@ const getRecentSessions = async (req, res) => {
       ],
     });
 
-    // Sort lại
-    sessions.reverse();
-
     // Trả về danh sách session kèm theo các số bên trong
     res.status(200).json(sessions);
   } catch (error) {

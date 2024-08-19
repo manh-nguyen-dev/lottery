@@ -310,12 +310,12 @@ const Dashboard = () => {
     <div className="dashboardContainer">
       {numbersList.map((obj, idx) => (
         <div key={`${idx}_number_list_${obj.id}`} className="adminPrizeTable">
-          <h4>Phiên {idx + 1}</h4>
+          <h4>Phiên {numbersList.length - idx}</h4>
           <AdminPrizeTable
             numbers={obj.numbers}
             sessionStatus={obj.status}
             sessionId={obj.id}
-            autoDisabled={idx < 4}
+            autoDisabled={idx > 2}
             timeRendered={obj.updatedAt}
             setNumbersList={setNumbersList}
           />
