@@ -20,7 +20,16 @@ export default function FirstLastTable({ visibleNumbers }) {
   const [twoDigits, setTwoDigits] = useState([]);
 
   useEffect(() => {
-    setTwoDigits(visibleNumbers.map((num) => getLastTwoDigits(num.value)));
+    const timeout = setTimeout(
+      () => {
+        setTwoDigits(visibleNumbers.map((num) => getLastTwoDigits(num.value)));
+      },
+      visibleNumbers.length === 27 ? 100 : 3000
+    );
+
+    return () => {
+      clearTimeout(timeout);
+    };
   }, [visibleNumbers]);
 
   const redRecords = prizes
