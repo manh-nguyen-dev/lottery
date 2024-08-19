@@ -1,4 +1,4 @@
-export const API_URL = "http://103.54.153.110:3000/api";
+export const API_URL = "https://quaythuxsmb.net/api";
 
 export const SESSION_STATUS = {
   SCHEDULED: 1,
