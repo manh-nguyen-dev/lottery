@@ -251,36 +251,32 @@ const updateNumber = async (req, res) => {
     // Lưu thay đổi
     await number.save();
 
-    if (run_socket) {
-      logInfo("Do has run_socket: ");
-      let targetSession = await Session.findOne({
-        where: { status: SESSION_STATUS.ONGOING },
-        order: [["createdAt", "DESC"]],
-        include: [
-          {
-            model: Number,
-            as: "numbers",
-          },
-        ],
-      });
+    logInfo("Do has run_socket: ");
+    let targetSession = await Session.findOne({
+      where: { status: SESSION_STATUS.ONGOING },
+      order: [["createdAt", "DESC"]],
+      include: [
+        {
+          model: Number,
+          as: "numbers",
+        },
+      ],
+    });
 
-      if (targetSession) {
-        logInfo("Do push socket: ");
-        await broadcastLotteryDataToUsers({
-          event: "numbersListWhenUpdateANumber",
-          numbers: targetSession.numbers,
-          status: targetSession.status,
-          sessionId: targetSession.id,
-        });
-      }
+    if (targetSession) {
+      logInfo("Do push socket: ");
+      await broadcastLotteryDataToUsers({
+        event: "numbersListWhenUpdateANumber",
+        numbers: targetSession.numbers,
+        status: targetSession.status,
+        sessionId: targetSession.id,
+      });
     }
 
-    setTimeout(() => {
-      res.status(200).json({
-        message: "Number updated successfully",
-        number,
-      });
-    }, 300);
+    res.status(200).json({
+      message: "Number updated successfully",
+      number,
+    });
   } catch (error) {
     console.error("Error updating number:", error);
     res.status(500).json({ error: "Internal server error" });
