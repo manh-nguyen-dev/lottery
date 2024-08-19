@@ -124,10 +124,7 @@ export default function AdminPrizeTable({
                       handleInputBlur(value, record, filledNumbers[record]?.id)
                     }
                     disabled={
-                      autoDisabled ||
-                      (Date.now() >
-                        new Date(timeRendered)?.getTime() + 6000 * record &&
-                        sessionStatus === SESSION_STATUS.ONGOING)
+                      autoDisabled || filledNumbers[record]?.status === 3
                     }
                     maxLength={getMaxLengthForIndex(record)}
                   />
