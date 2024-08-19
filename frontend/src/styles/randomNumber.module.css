@@ -67,44 +67,19 @@
 
 /* Responsive cho thiết bị di động */
 @media (max-width: 768px) {
-  .circle {
-    width: 16px; /* Kích thước nhỏ hơn cho di động */
-    height: 22px; /* Kích thước nhỏ hơn cho di động */
-    align-items: center;
-    justify-content: center;
-  }
+  
 
-  .digit {
-    font-size: 22px; /* Kích thước chữ nhỏ hơn cho di động */
-  }
 
-  .whiteText {
-    margin-left: 2px !important;
-    color: white;
-    font-size: 15px !important;
-    letter-spacing: 3px;
-    text-align: center;
-  }
+
+ 
 }
 
 /* Responsive cho các màn hình nhỏ hơn */
 @media (max-width: 480px) {
-  .circle {
-    width: 12px; /* Kích thước rất nhỏ cho các thiết bị nhỏ hơn */
-    height: 16px; /* Kích thước rất nhỏ cho các thiết bị nhỏ hơn */
-  }
 
-  .digit {
-    font-size: 18px; /* Kích thước chữ nhỏ hơn cho các thiết bị nhỏ hơn */
-  }
 
-  .whiteText {
-    margin-left: 2px !important;
-    color: white;
-    font-size: 10px !important;
-    letter-spacing: 2px;
-    text-align: center;
-  }
+
+
 
   .digitWrapper {
     margin: 0 1px; /* Khoảng cách nhỏ hơn giữa các số trên thiết bị nhỏ */

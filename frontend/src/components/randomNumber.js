@@ -40,7 +40,7 @@ export default function RandomNumber({ number = "", duration, record = 0 }) {
             className={`${digit} ${
               record === 26
                 ? styles.specRecord
-                : [22, 23, 24, 25].some((i) => i === record)
+                : record > 21 && record < 26
                 ? styles.recordRed
                 : ""
             } ${!isFinished ? styles.whiteText : ""}`}
