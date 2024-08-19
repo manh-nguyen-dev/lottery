@@ -281,7 +281,7 @@ const Dashboard = () => {
 
     socket.onopen = () => {
       console.log("WebSocket connection established");
-      ws.send("admin");
+      socket.send("admin");
     };
 
     socket.onmessage = (event) => {
