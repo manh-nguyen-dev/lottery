@@ -40,6 +40,8 @@ export default function Home() {
       socket.send("user");
     };
 
+    let timeout = null;
+
     socket.onmessage = (event) => {
       // Parse and handle incoming messages
       const data = JSON.parse(event.data);
@@ -51,7 +53,7 @@ export default function Home() {
         if (initData.sessionId !== data.sessionId) {
           setNumbers([]);
         }
-        setTimeout(
+        timeout = setTimeout(
           () => setNumbers(data.numbers),
           numbers.length === 27 ? 3000 : 100
         );
@@ -68,6 +70,7 @@ export default function Home() {
     return () => {
       if (socket) {
         console.log("un mount");
+        clearTimeout(timeout);
         initData.sessionId && completeRandom();
         socket.close();
       }

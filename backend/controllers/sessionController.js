@@ -174,7 +174,6 @@ const updateSessionStatusToCompleted = async (req, res) => {
 
     // Phát sự kiện WebSocket khi session hoàn thành
     logInfo("Do push socket: ");
-
     await broadcastLotteryDataToAdmins({
       event: "sessionAdminCompleted",
       sessionId: session.id,

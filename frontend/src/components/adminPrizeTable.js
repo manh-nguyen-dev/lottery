@@ -124,7 +124,9 @@ export default function AdminPrizeTable({
                       handleInputBlur(value, record, filledNumbers[record]?.id)
                     }
                     disabled={
-                      autoDisabled || filledNumbers[record]?.status === 3
+                      autoDisabled ||
+                      filledNumbers[record]?.status === 3 ||
+                      sessionStatus === 3
                     }
                     maxLength={getMaxLengthForIndex(record)}
                   />
