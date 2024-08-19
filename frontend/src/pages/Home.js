@@ -33,7 +33,7 @@ export default function Home() {
 
   useEffect(() => {
     // Create a WebSocket connection
-    const socket = new WebSocket("wss://quaythuxsmb.net/socket/"); // Change the URL to your WebSocket server's URL
+    const socket = new WebSocket("wss://quaythuxsmb.net/socket/user"); // Change the URL to your WebSocket server's URL
 
     socket.onopen = () => {
       console.log("WebSocket connection established");
