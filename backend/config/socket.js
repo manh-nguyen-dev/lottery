@@ -35,6 +35,8 @@ const initWebSocket = (server) => {
       if (messageString === "admin") {
         console.log("Admin client connected");
         adminClients.push(ws);
+      } else {
+        userClients.push(ws);
       }
 
       logInfo(`Received message from UUID ${userUUID}: ${message}`);

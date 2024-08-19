@@ -37,6 +37,7 @@ export default function Home() {
 
     socket.onopen = () => {
       console.log("WebSocket connection established");
+      socket.send("user");
     };
 
     socket.onmessage = (event) => {
