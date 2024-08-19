@@ -23,6 +23,7 @@ export default function RegionProvinceRandomSelect({
       setTrying(1);
       setNumbers([]);
       const { data } = await axios.post(`${API_URL}/sessions`);
+      setTimeout(() => setNumbers(data.numbers || []), 3000);
 
       console.log(data);
     } catch {

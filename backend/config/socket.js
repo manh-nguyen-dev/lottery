@@ -29,7 +29,7 @@ const initWebSocket = (server) => {
   logInfo("WebSocket server initialized");
 };
 
-const broadcast = (message, senderUUID) => {
+const broadcast = async (message, senderUUID) => {
   if (!wss) {
     logInfo("WebSocket server is not initialized");
     return;
@@ -42,9 +42,9 @@ const broadcast = (message, senderUUID) => {
 
   logInfo(`Broadcasting message: ${JSON.stringify(messageWithUUID)}`);
 
-  wss.clients.forEach((client) => {
+  await wss.clients.forEach(async (client) => {
     if (client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify(messageWithUUID));
+      await client.send(JSON.stringify(messageWithUUID));
     }
   });
 };

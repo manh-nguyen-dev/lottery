@@ -74,7 +74,7 @@ const createSessionWithNumbers = async (req, res) => {
 
     if (targetSession) {
       logInfo("Do push socket: ");
-      broadcast({
+      await broadcast({
         event: "numbersList",
         numbers: targetSession.numbers,
         status: targetSession.status,

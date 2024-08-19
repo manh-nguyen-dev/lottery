@@ -264,7 +264,7 @@ const Dashboard = () => {
       const { data } = await axios.get(`${API_URL}/admin/sessions/recent`);
       setNumbersList(data);
 
-      console.log("completeRandom", data);
+      console.log("loadNumbersList", data);
     } catch {
       console.log("error fetch numbers");
     }
@@ -286,7 +286,7 @@ const Dashboard = () => {
     socket.onmessage = (event) => {
       // Parse and handle incoming messages
       const data = JSON.parse(event.data);
-      console.log("in admin", data);
+      console.log("in admin onmessage", data);
       loadNumbersList();
     };
 

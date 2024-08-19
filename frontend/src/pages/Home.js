@@ -42,12 +42,14 @@ export default function Home() {
     socket.onmessage = (event) => {
       // Parse and handle incoming messages
       const data = JSON.parse(event.data);
-      console.log("in", data);
+      console.log("socket onmessage", data);
 
       if (data.numbers) {
         setInitData(data);
 
-        setNumbers([]);
+        if (initData.sessionId !== data.sessionId) {
+          setNumbers([]);
+        }
         setTimeout(
           () => setNumbers(data.numbers),
           numbers.length === 27 ? 3000 : 100
