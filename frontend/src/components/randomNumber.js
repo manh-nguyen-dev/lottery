@@ -37,7 +37,7 @@ export default function RandomNumber({ number = "", duration, record = 0 }) {
             } ${isFinished ? styles.hidden : ""}`}
           />
           <div
-            className={`${digit} ${
+            className={`${styles.digit} ${
               record === 26
                 ? styles.specRecord
                 : record > 21 && record < 26
