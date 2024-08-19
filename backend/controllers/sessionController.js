@@ -3,7 +3,7 @@ const SESSION_STATUS = require("../enums/sessionStatusEnum");
 const {
   broadcast,
   broadcastLotteryDataToAdmins,
-  broadcastLotteryDataToUser,
+  broadcastLotteryDataToUsers,
 } = require("../config/socket");
 const { logInfo } = require("../utils/logger");
 
