@@ -47,15 +47,13 @@ export default function Home() {
       if (data.numbers) {
         setInitData(data);
 
-        if (trying === 1) {
-          if (initData.sessionId !== data.sessionId) {
-            setNumbers([]);
-          }
-          setTimeout(
-            () => setNumbers(data.numbers),
-            numbers.length === 27 ? 3000 : 100
-          );
+        if (initData.sessionId !== data.sessionId) {
+          setNumbers([]);
         }
+        setTimeout(
+          () => setNumbers(data.numbers),
+          numbers.length === 27 ? 3000 : 100
+        );
       }
     };
 
