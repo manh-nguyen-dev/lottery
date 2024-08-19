@@ -264,10 +264,12 @@ const updateNumber = async (req, res) => {
       }
     }
 
-    res.status(200).json({
-      message: "Number updated successfully",
-      number,
-    });
+    setTimeout(() => {
+      res.status(200).json({
+        message: "Number updated successfully",
+        number,
+      });
+    }, 300);
   } catch (error) {
     console.error("Error updating number:", error);
     res.status(500).json({ error: "Internal server error" });

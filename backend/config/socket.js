@@ -45,16 +45,13 @@ const broadcast = async (message, senderUUID) => {
   };
 
   logInfo(`Broadcasting message: ${JSON.stringify(messageWithUUID)}`);
-
-  setTimeout(() => {
-    await(wss.clients.length ? wss.clients : wsClients).forEach(
-      async (client) => {
-        if (client.readyState === WebSocket.OPEN) {
-          await client.send(JSON.stringify(messageWithUUID));
-        }
+  await (wss.clients.length ? wss.clients : wsClients).forEach(
+    async (client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        await client.send(JSON.stringify(messageWithUUID));
       }
-    );
-  }, 500);
+    }
+  );
 };
 
 module.exports = { initWebSocket, broadcast };
