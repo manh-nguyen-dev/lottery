@@ -22,7 +22,7 @@ const initWebSocket = (server) => {
     if (pathname === "/admin") {
       adminClients.push(ws);
       console.log("Admin client connected");
-    } else if (pathname === "/user") {
+    } else {
       userClients.push(ws);
       console.log("User client connected");
     }
