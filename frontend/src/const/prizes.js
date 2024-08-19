@@ -36,6 +36,6 @@ export const prizes = [
     name: "7",
     records: [22, 23, 24, 25],
     hasRed: true,
-    className: "flex-row color-red bg-blue-light",
+    className: "flex-row color-red size-30 bg-blue-light",
   },
 ];

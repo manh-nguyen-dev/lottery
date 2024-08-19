@@ -19,7 +19,7 @@
 
 .prize-row .prize-name {
     min-height: 40px;
-    width: 60px;
+    width: 12%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -56,6 +56,10 @@
 
 .color-red .prize-number {
     font-size: 34px
+}
+
+.color-red.size-30 .prize-number {
+    font-size: 30px
 }
 
 .bg-blue-light {
@@ -104,7 +108,7 @@
 /* Responsive cho thiết bị di động */
 @media (max-width: 768px) {
     .prize-number {
-        font-size: 22px !important;
+        font-size: 24px !important;
     }
     .color-red .prize-number {
         font-size: 26px !important;
@@ -121,7 +125,7 @@
     .prize-number {
         font-size: 18px !important;
     }
-    
+
     .color-red .prize-number {
         font-size: 22px !important;
     }

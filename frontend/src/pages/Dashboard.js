@@ -315,7 +315,7 @@ const Dashboard = () => {
     };
 
     socket.onclose = () => {
-      connectSocket();
+      setTimeout(connectSocket(), 1000);
     };
 
     setWs(socket);

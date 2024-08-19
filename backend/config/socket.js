@@ -29,6 +29,8 @@ const initWebSocket = (server) => {
 
     ws.on("close", () => {
       logInfo(`Client disconnected with UUID: ${userUUID}`);
+      userClients = userClients.filter((client) => client.uuid !== userUUID);
+      adminClients = adminClients.filter((client) => client.uuid !== userUUID);
     });
 
     ws.on("message", (message) => {

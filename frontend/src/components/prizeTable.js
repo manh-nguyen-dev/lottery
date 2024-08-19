@@ -110,6 +110,7 @@ export default function PrizeTable({
                   <RandomNumber
                     number={visibleNumbers[record]?.value}
                     duration={3000}
+                    record={record}
                     isSpinning={isSpinning}
                   />
                 )}

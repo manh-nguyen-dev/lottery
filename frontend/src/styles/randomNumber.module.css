@@ -36,7 +36,16 @@
 /* Kích thước chữ số */
 .digit {
   z-index: 2;
+  font-size: 24px;
   position: relative;
+}
+
+.specRecord {
+  font-size: 34px;
+}
+
+.redRecord {
+  font-size: 30px;
 }
 
 /* Màu chữ khi quay ngẫu nhiên */
@@ -59,8 +68,8 @@
 /* Responsive cho thiết bị di động */
 @media (max-width: 768px) {
   .circle {
-    width: 15px; /* Kích thước nhỏ hơn cho di động */
-    height: 21px; /* Kích thước nhỏ hơn cho di động */
+    width: 16px; /* Kích thước nhỏ hơn cho di động */
+    height: 22px; /* Kích thước nhỏ hơn cho di động */
     align-items: center;
     justify-content: center;
   }

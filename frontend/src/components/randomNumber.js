@@ -1,9 +1,7 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import styles from "../styles/randomNumber.module.css";
 
-export default function RandomNumber({ number = "", duration }) {
+export default function RandomNumber({ number = "", duration, record = 0 }) {
   const [displayNumber, setDisplayNumber] = useState(
     generateRandomNumber(number.length)
   );
@@ -39,7 +37,13 @@ export default function RandomNumber({ number = "", duration }) {
             } ${isFinished ? styles.hidden : ""}`}
           />
           <div
-            className={`${styles.digit} ${!isFinished ? styles.whiteText : ""}`}
+            className={`${digit} ${
+              record === 26
+                ? styles.specRecord
+                : [22, 23, 24, 25].some((i) => i === record)
+                ? styles.recordRed
+                : ""
+            } ${!isFinished ? styles.whiteText : ""}`}
           >
             {digit}
           </div>
