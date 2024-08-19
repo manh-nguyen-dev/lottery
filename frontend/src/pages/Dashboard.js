@@ -275,7 +275,7 @@ const Dashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
+  const connectSocket = () => {
     // Create a WebSocket connection
     const socket = new WebSocket("wss://quaythuxsmb.net/socket/"); // Change the URL to your WebSocket server's URL
 
@@ -292,6 +292,28 @@ const Dashboard = () => {
 
     socket.onclose = () => {
       console.log("WebSocket connection closed");
+    };
+
+    return socket;
+  };
+
+  useEffect(() => {
+    // Create a WebSocket connection
+    const socket = connectSocket(); // Change the URL to your WebSocket server's URL
+
+    socket.onopen = () => {
+      console.log("WebSocket connection established");
+    };
+
+    socket.onmessage = (event) => {
+      // Parse and handle incoming messages
+      const data = JSON.parse(event.data);
+      console.log("in admin onmessage", data);
+      loadNumbersList();
+    };
+
+    socket.onclose = () => {
+      connectSocket();
     };
 
     setWs(socket);
