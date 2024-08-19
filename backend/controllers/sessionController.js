@@ -114,8 +114,7 @@ const updateSessionStatusToOngoing = async (req, res) => {
 
     // Phát sự kiện WebSocket khi session đang được thử
     logInfo("Do push socket: ");
-
-    broadcast({
+    await broadcast({
       event: "sessionOnGoing",
       sessionId: session.id,
       completedAt: session.updatedAt,
@@ -165,7 +164,6 @@ const updateSessionStatusToCompleted = async (req, res) => {
 
     // Phát sự kiện WebSocket khi session hoàn thành
     logInfo("Do push socket: ");
-
     await broadcast({
       event: "sessionCompleted",
       sessionId: session.id,
@@ -256,7 +254,6 @@ const updateNumber = async (req, res) => {
 
       if (targetSession) {
         logInfo("Do push socket: ");
-
         await broadcast({
           event: "numbersList",
           numbers: targetSession.numbers,
@@ -294,8 +291,7 @@ const updateNumberStatus = async (req, res) => {
     }
     // Phát sự kiện WebSocket khi client đã show number
     logInfo("Do push socket: ");
-
-    broadcast({
+    await broadcast({
       event: "clientReceivedNumber",
       numberId: id,
       status: status || SESSION_STATUS.SCHEDULED,
@@ -326,10 +322,10 @@ const updateNumbersStatus = async (req, res) => {
         returning: true,
       }
     );
-    logInfo("Do push socket: ");
 
     // Phát sự kiện WebSocket nếu cần
-    broadcast({
+    logInfo("Do push socket: ");
+    await broadcast({
       event: "numbersStatusUpdated",
       numberIds,
       status,
