@@ -30,7 +30,12 @@ export default function RandomNumber({ number = "", duration, record = 0 }) {
   return (
     <div className={styles.numberContainer}>
       {displayNumber.split("").map((digit, index) => (
-        <div key={index} className={styles.digitWrapper}>
+        <div
+          key={index}
+          className={`${styles.digitWrapper} ${
+            isFinished && styles.digitWrapperDone
+          }`}
+        >
           <div
             className={`${styles.circle} ${
               index % 2 === 0 ? styles.red : styles.black
