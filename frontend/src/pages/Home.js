@@ -31,7 +31,7 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {
+  const connectSocket = () => {
     // Create a WebSocket connection
     const socket = new WebSocket("wss://quaythuxsmb.net/socket/user"); // Change the URL to your WebSocket server's URL
 
@@ -39,8 +39,30 @@ export default function Home() {
       console.log("WebSocket connection established");
       socket.send("user");
     };
+    socket.onmessage = (event) => {
+      // Parse and handle incoming messages
+      const data = JSON.parse(event.data);
+      console.log("socket onmessage", data);
 
+      if (data.numbers) {
+        setInitData(data);
+
+        if (initData.sessionId !== data.sessionId) {
+          setNumbers([]);
+        }
+        setTimeout(
+          () => setNumbers(data.numbers),
+          numbers.length === 27 ? 3000 : 100
+        );
+      }
+    };
+
+    return socket;
+  };
+
+  useEffect(() => {
     let timeout = null;
+    const socket = connectSocket(); // Change the URL to your WebSocket server's URL
 
     socket.onmessage = (event) => {
       // Parse and handle incoming messages
@@ -62,6 +84,7 @@ export default function Home() {
 
     socket.onclose = () => {
       console.log("WebSocket connection closed");
+      setTimeout(() => connectSocket(), 1000);
     };
 
     setWs(socket);

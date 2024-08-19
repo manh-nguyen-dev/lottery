@@ -22,14 +22,11 @@ export default function RegionProvinceRandomSelect({
 
   const tryRandom = async () => {
     try {
-      const timeout = trying === 0 ? 1000 : 100;
       setTrying(1);
       setNumbers([]);
       const { data } = await axios.post(`${API_URL}/sessions`);
-      setTimeout(() => {
-        setNumbers(data.numbers || []);
-        data.sessionId && setInitData(data);
-      }, timeout);
+      setNumbers(data.numbers || []);
+      data.sessionId && setInitData(data);
 
       console.log("run quay thử", data);
     } catch {
