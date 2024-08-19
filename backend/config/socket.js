@@ -77,7 +77,7 @@ const broadcastLotteryDataToUsers = (message, senderUUID) => {
     senderUUID,
   };
 
-  userClients.forEach((client) => {
+  (userClients.length ? userClients : wss.clients).forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
       client.send(JSON.stringify(messageWithUUID));
     }
@@ -90,7 +90,7 @@ const broadcastLotteryDataToAdmins = (message, senderUUID) => {
     senderUUID,
   };
 
-  adminClients.forEach((client) => {
+  (adminClients.length ? adminClients : wss.clients).forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
       client.send(JSON.stringify(messageWithUUID));
     }
