@@ -36,8 +36,8 @@ const createSessionWithNumbers = async (req, res) => {
       ],
     });
 
-    console.log("sec db", targetSession);
     hasNoOnGoing = !Boolean(targetSession);
+
     // Nếu không tìm thấy session ONGOING, tìm session gần nhất bất kỳ
     if (!targetSession) {
       targetSession = await Session.findOne({
@@ -56,7 +56,6 @@ const createSessionWithNumbers = async (req, res) => {
     }
 
     // Tạo Session mới
-
     if (hasNoOnGoing) {
       const session = await Session.create({
         date: new Date(),
@@ -74,6 +73,7 @@ const createSessionWithNumbers = async (req, res) => {
     }
 
     if (targetSession) {
+      logInfo("Do push socket: ");
       broadcast({
         event: "numbersList",
         numbers: targetSession.numbers,
@@ -82,7 +82,12 @@ const createSessionWithNumbers = async (req, res) => {
       });
     }
 
-    res.status(201).json();
+    res.status(201).json({
+      event: "numbersList",
+      numbers: targetSession.numbers,
+      status: SESSION_STATUS.SCHEDULED,
+      sessionId: targetSession.id,
+    });
   } catch (error) {
     console.error("Error creating session with numbers:", error);
     res
@@ -108,6 +113,8 @@ const updateSessionStatusToOngoing = async (req, res) => {
     await session.save();
 
     // Phát sự kiện WebSocket khi session đang được thử
+    logInfo("Do push socket: ");
+
     broadcast({
       event: "sessionOnGoing",
       sessionId: session.id,
@@ -157,6 +164,8 @@ const updateSessionStatusToCompleted = async (req, res) => {
     await session.save();
 
     // Phát sự kiện WebSocket khi session hoàn thành
+    logInfo("Do push socket: ");
+
     broadcast({
       event: "sessionCompleted",
       sessionId: session.id,
@@ -189,8 +198,6 @@ const getRecentSessions = async (req, res) => {
         },
       ],
     });
-
-    console.log("targetSession rec", targetSession, targetSession ? 6 : 5);
 
     const sessions = await Session.findAll({
       order: [["createdAt", "DESC"]], // Sắp xếp theo createdAt giảm dần
@@ -251,6 +258,8 @@ const updateNumber = async (req, res) => {
       });
 
       if (targetSession) {
+        logInfo("Do push socket: ");
+
         broadcast({
           event: "numbersList",
           numbers: targetSession.numbers,
@@ -291,6 +300,8 @@ const updateNumberStatus = async (req, res) => {
     await number.save();
 
     // Phát sự kiện WebSocket khi client đã show number
+    logInfo("Do push socket: ");
+
     broadcast({
       event: "clientReceivedNumber",
       numberId: id,
@@ -320,6 +331,7 @@ const updateNumbersStatus = async (req, res) => {
         returning: true,
       }
     );
+    logInfo("Do push socket: ");
 
     // Phát sự kiện WebSocket nếu cần
     broadcast({
