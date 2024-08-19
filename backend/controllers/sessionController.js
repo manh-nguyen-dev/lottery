@@ -266,7 +266,7 @@ const updateNumber = async (req, res) => {
 
       if (targetSession) {
         logInfo("Do push socket: ");
-        await broadcastLotteryDataToAdmins({
+        await broadcastLotteryDataToUsers({
           event: "numbersListWhenUpdateANumber",
           numbers: targetSession.numbers,
           status: targetSession.status,
