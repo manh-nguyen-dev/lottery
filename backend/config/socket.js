@@ -4,24 +4,39 @@ const { logInfo } = require("../utils/logger");
 
 let wss;
 
-let wsClients = [];
-
+let userClients = [];
+let adminClients = [];
 const initWebSocket = (server) => {
   wss = new WebSocket.Server({ server });
 
-  wss.on("connection", (ws) => {
+  wss.on("connection", (ws, req) => {
     // Gán UUID cho mỗi kết nối
     const userUUID = uuidv4();
     ws.uuid = userUUID;
 
-    wsClients.push(ws);
+    const pathname = new URL(req.url, `ws://quaythuxsmb.net//socket:${server}`)
+      .pathname;
+
     logInfo(`Client connected with UUID: ${userUUID}`);
+
+    if (pathname === "/admin") {
+      adminClients.push(ws);
+      console.log("Admin client connected");
+    } else if (pathname === "/user") {
+      userClients.push(ws);
+      console.log("User client connected");
+    }
 
     ws.on("close", () => {
       logInfo(`Client disconnected with UUID: ${userUUID}`);
     });
 
     ws.on("message", (message) => {
+      if (messageString === "admin") {
+        console.log("Admin client connected");
+        adminClients.push(ws);
+      }
+
       logInfo(`Received message from UUID ${userUUID}: ${message}`);
     });
 
@@ -54,4 +69,35 @@ const broadcast = async (message, senderUUID) => {
   );
 };
 
-module.exports = { initWebSocket, broadcast };
+const broadcastLotteryDataToUsers = (message, senderUUID) => {
+  const messageWithUUID = {
+    ...message,
+    senderUUID,
+  };
+
+  userClients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify(messageWithUUID));
+    }
+  });
+};
+
+const broadcastLotteryDataToAdmins = (message, senderUUID) => {
+  const messageWithUUID = {
+    ...message,
+    senderUUID,
+  };
+
+  adminClients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify(messageWithUUID));
+    }
+  });
+};
+
+module.exports = {
+  initWebSocket,
+  broadcast,
+  broadcastLotteryDataToAdmins,
+  broadcastLotteryDataToUsers,
+};

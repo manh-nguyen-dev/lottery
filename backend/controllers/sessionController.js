@@ -1,6 +1,10 @@
 const { Session, Number } = require("../models");
 const SESSION_STATUS = require("../enums/sessionStatusEnum");
-const { broadcast } = require("../config/socket");
+const {
+  broadcast,
+  broadcastLotteryDataToAdmins,
+  broadcastLotteryDataToUser,
+} = require("../config/socket");
 const { logInfo } = require("../utils/logger");
 
 // Helper Functions
@@ -74,9 +78,15 @@ const createSessionWithNumbers = async (req, res) => {
 
     if (targetSession) {
       logInfo("Do push socket: ");
-      await broadcast({
+      await broadcastLotteryDataToUsers({
         event: "numbersList",
         numbers: targetSession.numbers,
+        status: targetSession.status,
+        sessionId: targetSession.id,
+      });
+
+      await broadcastLotteryDataToAdmins({
+        event: "userAddedSession",
         status: targetSession.status,
         sessionId: targetSession.id,
       });
@@ -164,8 +174,9 @@ const updateSessionStatusToCompleted = async (req, res) => {
 
     // Phát sự kiện WebSocket khi session hoàn thành
     logInfo("Do push socket: ");
-    await broadcast({
-      event: "sessionCompleted",
+
+    await broadcastLotteryDataToAdmins({
+      event: "sessionAdminCompleted",
       sessionId: session.id,
       completedAt: session.updatedAt,
     });
@@ -255,8 +266,8 @@ const updateNumber = async (req, res) => {
 
       if (targetSession) {
         logInfo("Do push socket: ");
-        await broadcast({
-          event: "numbersList",
+        await broadcastLotteryDataToAdmins({
+          event: "numbersListWhenUpdateANumber",
           numbers: targetSession.numbers,
           status: targetSession.status,
           sessionId: targetSession.id,
@@ -294,8 +305,9 @@ const updateNumberStatus = async (req, res) => {
     }
     // Phát sự kiện WebSocket khi client đã show number
     logInfo("Do push socket: ");
-    await broadcast({
-      event: "clientReceivedNumber",
+
+    await broadcastLotteryDataToAdmins({
+      event: "clientLoadedAdNumber",
       numberId: id,
       status: status || SESSION_STATUS.SCHEDULED,
     });

@@ -281,10 +281,12 @@ const Dashboard = () => {
 
     socket.onopen = () => {
       console.log("WebSocket connection established");
+      ws.send("admin");
     };
 
     socket.onmessage = (event) => {
       // Parse and handle incoming messages
+
       const data = JSON.parse(event.data);
       console.log("in admin onmessage", data);
       loadNumbersList();
