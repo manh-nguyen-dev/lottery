@@ -28,9 +28,9 @@ export default function RegionProvinceRandomSelect({
       setTimeout(() => {
         setNumbers(data.numbers || []);
         data.sessionId && setInitData(data);
-      }, 6000);
+      }, 3000);
 
-      console.log(data);
+      console.log("run quay thử", data);
     } catch {
       console.log("error fetch numbers");
     }

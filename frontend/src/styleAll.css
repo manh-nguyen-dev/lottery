@@ -3621,6 +3621,14 @@ header div:last-child {
   position: relative;
 }
 
+
+.list-statistic .form-group
+{
+display: flex;
+align-items: center;
+}
+
+
 .list-statistic p {
   padding: 5px 0;
 }

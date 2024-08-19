@@ -241,6 +241,7 @@ const updateNumber = async (req, res) => {
     await number.save();
 
     if (run_socket) {
+      logInfo("Do has run_socket: ");
       let targetSession = await Session.findOne({
         where: { status: SESSION_STATUS.ONGOING },
         order: [["createdAt", "DESC"]],
