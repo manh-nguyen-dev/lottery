@@ -7,6 +7,8 @@ export default function RegionProvinceRandomSelect({
   trying,
   setTrying,
   setNumbers,
+  initData,
+  setInitData,
 }) {
   const [selected, setSelected] = useState("1");
   useEffect(() => {}, [selected]);
@@ -23,7 +25,10 @@ export default function RegionProvinceRandomSelect({
       setTrying(1);
       setNumbers([]);
       const { data } = await axios.post(`${API_URL}/sessions`);
-      // setTimeout(() => setNumbers(data.numbers || []), 3000);
+      setTimeout(() => {
+        setNumbers(data.numbers || []);
+        data.sessionId && setInitData(data);
+      }, 6000);
 
       console.log(data);
     } catch {

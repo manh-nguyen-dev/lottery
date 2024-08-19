@@ -47,7 +47,7 @@ export default function Home() {
       if (data.numbers) {
         setInitData(data);
 
-        if (trying === 2) {
+        if (trying === 1) {
           if (initData.sessionId !== data.sessionId) {
             setNumbers([]);
           }
@@ -307,6 +307,8 @@ export default function Home() {
                   trying={trying}
                   setTrying={setTrying}
                   setNumbers={setNumbers}
+                  initData={initData}
+                  setInitData={setInitData}
                 />
                 <div id="quaythudate" />
               </div>
