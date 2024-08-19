@@ -235,7 +235,8 @@ body {
 .widget-container {
     float: left;
     width: 100%;
-    position: relative
+    position: relative;
+    border-right: solid 1px #e0e0e0;
 }
 
 .post-title-widget {

@@ -99,3 +99,12 @@
     justify-content: center;
     border-top: solid 1px #dddfe2;
 }
+
+
+@media (max-width: 480px) {
+    .spinning-ball {
+        width: 16px;
+        height: 16px;
+    }  
+}
+  

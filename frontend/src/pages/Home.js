@@ -96,7 +96,7 @@ export default function Home() {
         name="keywords"
         content="Quay thử XSMB,Quay thử MB,quay thử xổ số miền bắc hôm nay"
       />
-      <link rel="canonical" href="https://xoso.com.vn/quay-thu-xsmb.html" />
+      <link rel="canonical" href="https://xoso.com.vn#" />
       <meta name="COPYRIGHT" content="Copyright (C) 2007 xoso.com.vn" />
       <meta name="RATING" content="GENERAL" />
       <meta name="revisit-after" content="1 days" />
@@ -185,17 +185,13 @@ export default function Home() {
                 <a title="Quay thử" href="#">
                   Quay thử
                 </a>
-                <a
-                  className="active"
-                  title="Quay thử MB"
-                  href="/quay-thu-xsmb.html"
-                >
+                <a className="active" title="Quay thử MB" href="#">
                   MB
                 </a>
-                <a title="Quay thử MT" href="/quay-thu-xsmt.html">
+                <a title="Quay thử MT" href="#">
                   MT
                 </a>
-                <a title="Quay thử MN" href="/quay-thu-xsmn.html">
+                <a title="Quay thử MN" href="#">
                   MN
                 </a>
                 <a title="Quay thử Vietlott" href="/quay-thu-vietlott.html">
