@@ -315,7 +315,7 @@ const Dashboard = () => {
             numbers={obj.numbers}
             sessionStatus={obj.status}
             sessionId={obj.id}
-            autoDisabled={idx > 2}
+            autoDisabled={idx > 1}
             timeRendered={obj.updatedAt}
             setNumbersList={setNumbersList}
           />
