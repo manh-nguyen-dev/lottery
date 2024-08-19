@@ -92,7 +92,7 @@ export default function FirstLastTable({ visibleNumbers }) {
               key={"last" + dg}
               className={dg % 2 !== 0 ? "bg-blue-light" : ""}
             >
-              {renderDigitValues(dg)}
+              {renderDigitValues(dg, true)}
             </div>
           ))}
         </div>
@@ -103,7 +103,7 @@ export default function FirstLastTable({ visibleNumbers }) {
               key={"first" + dg}
               className={dg % 2 !== 0 ? "bg-blue-light" : ""}
             >
-              {renderDigitValues(dg, true)}
+              {renderDigitValues(dg)}
             </div>
           ))}
         </div>

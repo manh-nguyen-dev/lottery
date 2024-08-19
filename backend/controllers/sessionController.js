@@ -166,7 +166,7 @@ const updateSessionStatusToCompleted = async (req, res) => {
     // Phát sự kiện WebSocket khi session hoàn thành
     logInfo("Do push socket: ");
 
-    broadcast({
+    await broadcast({
       event: "sessionCompleted",
       sessionId: session.id,
       completedAt: session.updatedAt,
@@ -260,7 +260,7 @@ const updateNumber = async (req, res) => {
       if (targetSession) {
         logInfo("Do push socket: ");
 
-        broadcast({
+        await broadcast({
           event: "numbersList",
           numbers: targetSession.numbers,
           status: targetSession.status,
@@ -295,10 +295,6 @@ const updateNumberStatus = async (req, res) => {
     if (status !== undefined) {
       number.status = status;
     }
-
-    // Lưu thay đổi
-    await number.save();
-
     // Phát sự kiện WebSocket khi client đã show number
     logInfo("Do push socket: ");
 
@@ -307,6 +303,8 @@ const updateNumberStatus = async (req, res) => {
       numberId: id,
       status: status || SESSION_STATUS.SCHEDULED,
     });
+    // Lưu thay đổi
+    await number.save();
 
     res.status(200).json({
       message: "Number status successfully",
