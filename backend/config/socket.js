@@ -8,23 +8,23 @@ let wss;
 let userClients = [];
 let adminClients = [];
 
-function convertDatesToString(obj) {
+function convertDatesToString(obj = {}) {
   // Iterate over all properties of the object
-  for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      const value = obj[key];
+  if (typeof obj === "object") {
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        const value = obj[key];
 
-      // Check if the property is an array
-      if (Array.isArray(value)) {
-        value.forEach((item) => convertDatesToString(item));
-      }
-      // Check if the property is an object and not null
-      else if (typeof value === "object" && value !== null) {
-        convertDatesToString(value);
-      }
-      // Check if the property is a string representation of a date
-      else if (key === "createdAt" || key === "updatedAt") {
-        if (value instanceof Date) {
+        // Check if the property is an array
+        if (Array.isArray(value)) {
+          value.forEach((item) => convertDatesToString(item));
+        }
+        // Check if the property is an object and not null
+        else if (typeof value === "object" && value !== null) {
+          convertDatesToString(value);
+        }
+        // Check if the property is a string representation of a date
+        else if (value instanceof Date) {
           // Convert the Date object to a string
           obj[key] = value.toISOString();
         }
