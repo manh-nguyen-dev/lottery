@@ -115,7 +115,7 @@ export default function AdminPrizeTable({
           <div className={prize.className || "flex-row"}>
             {prize.records.map((record, rIdx) => (
               <div key={rIdx} className="prize-number">
-                {filledNumbers[record]?.value && (
+                {
                   <input
                     type="number"
                     value={filledNumbers[record]?.value || ""}
@@ -133,7 +133,7 @@ export default function AdminPrizeTable({
                     }
                     maxLength={getMaxLengthForIndex(record)}
                   />
-                )}
+                }
               </div>
             ))}
           </div>

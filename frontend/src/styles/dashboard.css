@@ -24,8 +24,19 @@
     color: #666;
   }
   
-  .adminPrizeTable {
-    margin-top: 20px;
-    max-width: 600px;
-  }
+
   
+
+  @media (max-width: 768px) {
+    .dashboardContainer {
+      display: flex;
+      flex-direction: column;
+      margin-top: 20px;
+    }
+
+    .adminPrizeTable {
+      margin-top: 20px;
+      max-width: 100%;
+    }
+    
+ }
