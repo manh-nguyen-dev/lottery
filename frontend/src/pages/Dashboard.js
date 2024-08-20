@@ -294,6 +294,10 @@ const Dashboard = () => {
 
     socket.onclose = () => {
       console.log("WebSocket connection closed");
+      setTimeout(function () {
+        console.log("Reconnecting...");
+        connectSocket();
+      }, 3000); // Retry after 5 seconds
     };
 
     return socket;
@@ -315,7 +319,10 @@ const Dashboard = () => {
     };
 
     socket.onclose = () => {
-      setTimeout(connectSocket(), 1000);
+      setTimeout(function () {
+        console.log("Reconnecting...");
+        connectSocket();
+      }, 3000); // Retry after 5 seconds
     };
 
     setWs(socket);

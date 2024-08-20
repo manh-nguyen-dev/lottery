@@ -87,27 +87,6 @@ const initWebSocket = (server) => {
   logInfo("WebSocket server initialized");
 };
 
-const broadcast = async (message, senderUUID) => {
-  if (!wss) {
-    logInfo("WebSocket server is not initialized");
-    return;
-  }
-
-  const messageWithUUID = {
-    ...message,
-    senderUUID,
-  };
-
-  logInfo(`Broadcasting message: ${JSON.stringify(messageWithUUID)}`);
-  await (wss.clients.length ? wss.clients : wsClients).forEach(
-    async (client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        await client.send(JSON.stringify(messageWithUUID));
-      }
-    }
-  );
-};
-
 const broadcastLotteryDataToUsers = (message = {}, senderUUID = "") => {
   const messageWithUUID = {
     ...message,
@@ -146,7 +125,6 @@ const broadcastLotteryDataToAdmins = (message = {}, senderUUID = "") => {
 
 module.exports = {
   initWebSocket,
-  broadcast,
   broadcastLotteryDataToAdmins,
   broadcastLotteryDataToUsers,
 };
