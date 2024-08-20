@@ -54,8 +54,7 @@ const createSessionWithNumbers = async (req, res) => {
         ],
       });
 
-      hasNoOnGoing &&
-        (await updateSessionStatus(targetSession.id, SESSION_STATUS.ONGOING));
+      await updateSessionStatus(targetSession.id, SESSION_STATUS.ONGOING);
     }
 
     // Tạo Session mới
