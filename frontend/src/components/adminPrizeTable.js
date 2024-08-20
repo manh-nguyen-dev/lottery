@@ -84,11 +84,15 @@ export default function AdminPrizeTable({
     setFilledNumbers(newValues);
   };
 
-  const handleInputBlur = async (e, record, numberId) => {
-    if (e?.target.value?.length < getMaxLengthForIndex(record)) return;
+  const handleInputBlur = async (e, record, number) => {
+    const { id: numberId, value: numberOldValue } = number || {};
+    if (
+      e?.target.value?.length < getMaxLengthForIndex(record) ||
+      numberOldValue?.toString() === e?.target.value
+    )
+      return;
 
     try {
-      console.log(e);
       const response = await axios.put(`${API_URL}/numbers/${numberId}`, {
         value: e?.target.value,
         session_id: sessionId,
@@ -121,7 +125,7 @@ export default function AdminPrizeTable({
                     value={filledNumbers[record]?.value || ""}
                     onChange={(value) => handleInputChange(value, record)}
                     onBlur={(value) =>
-                      handleInputBlur(value, record, filledNumbers[record]?.id)
+                      handleInputBlur(value, record, filledNumbers[record])
                     }
                     disabled={
                       autoDisabled ||
