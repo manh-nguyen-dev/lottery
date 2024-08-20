@@ -33,7 +33,7 @@ export default function Home() {
 
   const connectSocket = () => {
     // Create a WebSocket connection
-    const socket = new WebSocket("wss://quaythuxsmb.net/socket/user"); // Change the URL to your WebSocket server's URL
+    const socket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL_USER);
 
     socket.onopen = () => {
       console.log("WebSocket connection established");

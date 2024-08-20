@@ -1,4 +1,4 @@
-export const API_URL = "https://quaythuxsmb.net/api";
+export const API_URL = process.env.REACT_APP_API_URL;
 
 export const SESSION_STATUS = {
   SCHEDULED: 1,
