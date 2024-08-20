@@ -1,5 +1,28 @@
+-- Create `lottery_db` database if  it doesn't exist
+CREATE DATABASE IF NOT EXISTS lottery_db;
+
 -- Use the newly created `lottery_db` database
 USE lottery_db;
+
+-- Create 'sessions' table if it doesn't exist
+CREATE TABLE IF NOT EXISTS sessions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    status INT DEFAULT 1,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Create 'numbers' table if it doesn't exist
+CREATE TABLE IF NOT EXISTS numbers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    value INT NOT NULL,
+    status INT DEFAULT 1,
+    session_id INT NOT NULL,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (session_id) REFERENCES sessions(id) ON DELETE CASCADE
+);
+
 
 -- Insert seed data into the 'sessions' table
 INSERT INTO sessions (status, createdAt, updatedAt) 
