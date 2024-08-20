@@ -91,8 +91,8 @@ const initWebSocket = (server) => {
 const broadcastLotteryDataToUsers = (message = {}, senderUUID = "") => {
   const messageWithUUID = {
     ...message,
-    userClients: userClients || [],
-    adminClients: adminClients || [],
+    userClients: userClients?.map(({ type, uuid }) => ({ type, uuid })),
+    adminClients: adminClients?.map(({ type, uuid }) => ({ type, uuid })),
     senderUUID,
   };
 
@@ -109,8 +109,8 @@ const broadcastLotteryDataToUsers = (message = {}, senderUUID = "") => {
 const broadcastLotteryDataToAdmins = (message = {}, senderUUID = "") => {
   const messageWithUUID = {
     ...message,
-    adminClients: adminClients || [],
-    userClients: userClients || [],
+    adminClients: adminClients?.map(({ type, uuid }) => ({ type, uuid })),
+    userClients: userClients?.map(({ type, uuid }) => ({ type, uuid })),
     senderUUID,
   };
 
