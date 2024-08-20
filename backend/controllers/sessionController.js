@@ -95,7 +95,7 @@ const createSessionWithNumbers = async (req, res) => {
     res.status(201).json({
       event: "numbersList",
       numbers: targetSession.numbers,
-      status: SESSION_STATUS.SCHEDULED,
+      status: SESSION_STATUS.ONGOING,
       sessionId: targetSession.id,
     });
   } catch (error) {

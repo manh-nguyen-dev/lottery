@@ -76,30 +76,44 @@ const broadcast = async (message, senderUUID) => {
   );
 };
 
-const broadcastLotteryDataToUsers = (message, senderUUID = "") => {
+const broadcastLotteryDataToUsers = (message = {}, senderUUID = "") => {
   const messageWithUUID = {
     ...message,
-    userClients: userClients || [],
+    userClients: stringify(userClients) || [],
     senderUUID,
   };
 
+  const customJSON = JSON.stringify(messageWithUUID, (key, value) => {
+    if (value instanceof Date) {
+      return value.toISOString(); // Convert Date to ISO string
+    }
+    return value;
+  });
+
   (userClients.length ? userClients : wss.clients).forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
-      client.send(stringify(messageWithUUID));
+      client.send(customJSON);
     }
   });
 };
 
-const broadcastLotteryDataToAdmins = (message, senderUUID = "") => {
+const broadcastLotteryDataToAdmins = (message = {}, senderUUID = "") => {
   const messageWithUUID = {
     ...message,
     adminClients: adminClients || [],
     senderUUID,
   };
 
+  const customJSON = JSON.stringify(messageWithUUID, (key, value) => {
+    if (value instanceof Date) {
+      return value.toISOString(); // Convert Date to ISO string
+    }
+    return value;
+  });
+
   (adminClients.length ? adminClients : wss.clients).forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
-      client.send(stringify(messageWithUUID));
+      client.send(customJSON);
     }
   });
 };
