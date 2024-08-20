@@ -1,6 +1,7 @@
 const WebSocket = require("ws");
 const { v4: uuidv4 } = require("uuid");
 const { logInfo } = require("../utils/logger");
+const { stringify } = require("flatted");
 
 let wss;
 
@@ -75,7 +76,7 @@ const broadcast = async (message, senderUUID) => {
   );
 };
 
-const broadcastLotteryDataToUsers = (message, senderUUID) => {
+const broadcastLotteryDataToUsers = (message, senderUUID = "") => {
   const messageWithUUID = {
     ...message,
     userClients: userClients || [],
@@ -84,12 +85,12 @@ const broadcastLotteryDataToUsers = (message, senderUUID) => {
 
   (userClients.length ? userClients : wss.clients).forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify(messageWithUUID));
+      client.send(stringify(messageWithUUID));
     }
   });
 };
 
-const broadcastLotteryDataToAdmins = (message, senderUUID) => {
+const broadcastLotteryDataToAdmins = (message, senderUUID = "") => {
   const messageWithUUID = {
     ...message,
     adminClients: adminClients || [],
@@ -98,7 +99,7 @@ const broadcastLotteryDataToAdmins = (message, senderUUID) => {
 
   (adminClients.length ? adminClients : wss.clients).forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify(messageWithUUID));
+      client.send(stringify(messageWithUUID));
     }
   });
 };
