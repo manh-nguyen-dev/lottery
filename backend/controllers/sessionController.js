@@ -268,6 +268,13 @@ const updateNumber = async (req, res) => {
         status: targetSession.status,
         sessionId: targetSession.id,
       });
+      logInfo("Force do push socket admin: ");
+      await broadcastLotteryDataToAdmins({
+        event: "numbersListWhenUpdateANumber",
+        numbers: targetSession.numbers,
+        status: targetSession.status,
+        sessionId: targetSession.id,
+      });
     }
 
     res.status(200).json({
