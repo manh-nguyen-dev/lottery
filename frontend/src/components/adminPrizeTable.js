@@ -86,11 +86,7 @@ export default function AdminPrizeTable({
 
   const handleInputBlur = async (e, record, number) => {
     const { id: numberId, value: numberOldValue } = number || {};
-    if (
-      e?.target.value?.length < getMaxLengthForIndex(record) ||
-      numberOldValue?.toString() === e?.target.value
-    )
-      return;
+    if (e?.target.value?.length < getMaxLengthForIndex(record)) return;
 
     try {
       const response = await axios.put(`${API_URL}/numbers/${numberId}`, {
