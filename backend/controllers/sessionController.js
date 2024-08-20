@@ -208,7 +208,7 @@ const getRecentSessions = async (req, res) => {
 
     const sessions = await Session.findAll({
       order: [["createdAt", "DESC"]], // Sắp xếp theo createdAt giảm dần
-      limit: targetSession ? 2 : 1, // Lấy 5 session gần nhất
+      limit: targetSession ? 3 : 2, // Lấy 5 session gần nhất
       include: [
         {
           model: Number,

@@ -46,9 +46,9 @@ const initWebSocket = (server) => {
     const pathname = new URL(req.url, `ws://quaythuxsmb.net//socket:${server}`)
       .pathname;
 
-    logInfo(`Client connected with UUID: ${userUUID}`);
+    logInfo(`Client connected with UUID: ${userUUID} ${pathname}`);
 
-    if (pathname === "/admin") {
+    if (pathname === "/dashboard" || pathname === "/admin") {
       ws.type = "admin";
       adminClients.push(ws);
       console.log("Admin client connected");

@@ -126,6 +126,8 @@ export default function AdminPrizeTable({
                     disabled={
                       autoDisabled ||
                       filledNumbers[record]?.status === 3 ||
+                      numbers[record - 2]?.status === 3 ||
+                      numbers[record - 1]?.status === 3 ||
                       sessionStatus === 3
                     }
                     maxLength={getMaxLengthForIndex(record)}
