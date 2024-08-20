@@ -74,7 +74,7 @@ const initWebSocket = (server) => {
         adminClients.push(ws);
       } else {
         console.log("user client connected");
-        ws.type = "admin";
+        ws.type = "client";
         userClients.push(ws);
       }
     });
