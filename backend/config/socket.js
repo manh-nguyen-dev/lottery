@@ -10,9 +10,9 @@ let adminClients = [];
 
 function convertDatesToString(obj = {}) {
   // Iterate over all properties of the object
-  if (typeof obj === "object") {
+  if (obj && typeof obj === "object" && !Array.isArray(obj)) {
     for (const key in obj) {
-      if (obj.hasOwnProperty(key)) {
+      if (obj?.hasOwnProperty?.(key)) {
         const value = obj[key];
 
         // Check if the property is an array
@@ -30,6 +30,8 @@ function convertDatesToString(obj = {}) {
         }
       }
     }
+  } else if (Array.isArray(obj)) {
+    obj.forEach((item) => convertDatesToString(item));
   }
 }
 
