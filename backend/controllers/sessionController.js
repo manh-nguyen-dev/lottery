@@ -1,7 +1,6 @@
 const { Session, Number } = require("../models");
 const SESSION_STATUS = require("../enums/sessionStatusEnum");
 const {
-  broadcast,
   broadcastLotteryDataToAdmins,
   broadcastLotteryDataToUsers,
 } = require("../config/socket");
@@ -55,8 +54,7 @@ const createSessionWithNumbers = async (req, res) => {
         ],
       });
 
-      hasNoOnGoing &&
-        (await updateSessionStatus(targetSession.id, SESSION_STATUS.ONGOING));
+      await updateSessionStatus(targetSession.id, SESSION_STATUS.ONGOING);
     }
 
     // Tạo Session mới
@@ -124,7 +122,7 @@ const updateSessionStatusToOngoing = async (req, res) => {
 
     // Phát sự kiện WebSocket khi session đang được thử
     logInfo("Do push socket: ");
-    await broadcast({
+    await broadcastLotteryDataToAdmins({
       event: "sessionOnGoing",
       sessionId: session.id,
       completedAt: session.updatedAt,
@@ -209,7 +207,7 @@ const getRecentSessions = async (req, res) => {
 
     const sessions = await Session.findAll({
       order: [["createdAt", "DESC"]], // Sắp xếp theo createdAt giảm dần
-      limit: targetSession ? 6 : 5, // Lấy 5 session gần nhất
+      limit: targetSession ? 3 : 2, // Lấy 5 session gần nhất
       include: [
         {
           model: Number,
@@ -265,6 +263,13 @@ const updateNumber = async (req, res) => {
     if (targetSession) {
       logInfo("Do push socket: ");
       await broadcastLotteryDataToUsers({
+        event: "numbersListWhenUpdateANumber",
+        numbers: targetSession.numbers,
+        status: targetSession.status,
+        sessionId: targetSession.id,
+      });
+      logInfo("Force do push socket admin: ");
+      await broadcastLotteryDataToAdmins({
         event: "numbersListWhenUpdateANumber",
         numbers: targetSession.numbers,
         status: targetSession.status,
@@ -335,7 +340,7 @@ const updateNumbersStatus = async (req, res) => {
 
     // Phát sự kiện WebSocket nếu cần
     logInfo("Do push socket: ");
-    await broadcast({
+    await broadcastLotteryDataToAdmins({
       event: "numbersStatusUpdated",
       numberIds,
       status,

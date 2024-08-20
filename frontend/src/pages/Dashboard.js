@@ -7,273 +7,18 @@ import { API_URL } from "../const/index.js";
 const Dashboard = () => {
   const [ws, setWs] = useState(null);
 
-  const [numbersList, setNumbersList] = useState([
-    [
-      {
-        value: 26680,
-      },
-      {
-        value: 56422,
-      },
-      {
-        value: 78436,
-      },
-      {
-        value: 70538,
-      },
-      {
-        value: 26612,
-      },
-      {
-        value: 93568,
-      },
-      {
-        value: 62585,
-      },
-      {
-        value: 69373,
-      },
-      {
-        value: 52768,
-      },
-      {
-        value: 5555,
-      },
-      {
-        value: 5800,
-      },
-      {
-        value: 9461,
-      },
-      {
-        value: 3668,
-      },
-      {
-        value: 2909,
-      },
-      {
-        value: 7306,
-      },
-      {
-        value: 8726,
-      },
-      {
-        value: 2905,
-      },
-      {
-        value: 7182,
-      },
-      {
-        value: 1956,
-      },
-      {
-        value: 662,
-      },
-      {
-        value: 290,
-      },
-      {
-        value: 577,
-      },
-      {
-        value: 26,
-      },
-      {
-        value: 15,
-      },
-      {
-        value: 51,
-      },
-      {
-        value: 74,
-      },
-      {
-        value: 28526,
-      },
-    ],
-    [
-      {
-        value: 26680,
-      },
-      {
-        value: 56422,
-      },
-      {
-        value: 78436,
-      },
-      {
-        value: 70538,
-      },
-      {
-        value: 26612,
-      },
-      {
-        value: 93568,
-      },
-      {
-        value: 62585,
-      },
-      {
-        value: 69373,
-      },
-      {
-        value: 52768,
-      },
-      {
-        value: 5555,
-      },
-      {
-        value: 5800,
-      },
-      {
-        value: 9461,
-      },
-      {
-        value: 3668,
-      },
-      {
-        value: 2909,
-      },
-      {
-        value: 7306,
-      },
-      {
-        value: 8726,
-      },
-      {
-        value: 2905,
-      },
-      {
-        value: 7182,
-      },
-      {
-        value: 1956,
-      },
-      {
-        value: 662,
-      },
-      {
-        value: 290,
-      },
-      {
-        value: 577,
-      },
-      {
-        value: 26,
-      },
-      {
-        value: 15,
-      },
-      {
-        value: 51,
-      },
-      {
-        value: 74,
-      },
-      {
-        value: 28526,
-      },
-    ],
-    [
-      {
-        value: 26680,
-      },
-      {
-        value: 56422,
-      },
-      {
-        value: 78436,
-      },
-      {
-        value: 70538,
-      },
-      {
-        value: 26612,
-      },
-      {
-        value: 93568,
-      },
-      {
-        value: 62585,
-      },
-      {
-        value: 69373,
-      },
-      {
-        value: 52768,
-      },
-      {
-        value: 5555,
-      },
-      {
-        value: 5800,
-      },
-      {
-        value: 9461,
-      },
-      {
-        value: 3668,
-      },
-      {
-        value: 2909,
-      },
-      {
-        value: 7306,
-      },
-      {
-        value: 8726,
-      },
-      {
-        value: 2905,
-      },
-      {
-        value: 7182,
-      },
-      {
-        value: 1956,
-      },
-      {
-        value: 662,
-      },
-      {
-        value: 290,
-      },
-      {
-        value: 577,
-      },
-      {
-        value: 26,
-      },
-      {
-        value: 15,
-      },
-      {
-        value: 51,
-      },
-      {
-        value: 74,
-      },
-      {
-        value: 28526,
-      },
-    ],
-  ]);
+  const [numbersList, setNumbersList] = useState([]);
 
   const loadNumbersList = async () => {
     try {
       const { data } = await axios.get(`${API_URL}/admin/sessions/recent`);
       setNumbersList(data);
 
-      console.log("loadNumbersList", data);
+      console.log("load Numbers List", data);
     } catch {
       console.log("error fetch numbers");
     }
   };
-
-  useEffect(() => {
-    loadNumbersList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const connectSocket = () => {
     // Create a WebSocket connection
@@ -294,17 +39,23 @@ const Dashboard = () => {
 
     socket.onclose = () => {
       console.log("WebSocket connection closed");
+      setTimeout(function () {
+        console.log("Reconnecting...");
+        connectSocket();
+      }, 3000); // Retry after 5 seconds
     };
 
     return socket;
   };
 
   useEffect(() => {
+    loadNumbersList();
     // Create a WebSocket connection
     const socket = connectSocket(); // Change the URL to your WebSocket server's URL
 
     socket.onopen = () => {
       console.log("WebSocket connection established");
+      socket.send("admin");
     };
 
     socket.onmessage = (event) => {
@@ -315,7 +66,10 @@ const Dashboard = () => {
     };
 
     socket.onclose = () => {
-      setTimeout(connectSocket(), 1000);
+      setTimeout(function () {
+        console.log("Reconnecting...");
+        connectSocket();
+      }, 3000); // Retry after 5 seconds
     };
 
     setWs(socket);

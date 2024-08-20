@@ -10,9 +10,9 @@ let adminClients = [];
 
 function convertDatesToString(obj = {}) {
   // Iterate over all properties of the object
-  if (typeof obj === "object") {
+  if (obj && typeof obj === "object" && !Array.isArray(obj)) {
     for (const key in obj) {
-      if (obj.hasOwnProperty(key)) {
+      if (obj?.hasOwnProperty?.(key)) {
         const value = obj[key];
 
         // Check if the property is an array
@@ -30,6 +30,8 @@ function convertDatesToString(obj = {}) {
         }
       }
     }
+  } else if (Array.isArray(obj)) {
+    obj.forEach((item) => convertDatesToString(item));
   }
 }
 
@@ -44,9 +46,9 @@ const initWebSocket = (server) => {
     const pathname = new URL(req.url, `ws://quaythuxsmb.net//socket:${server}`)
       .pathname;
 
-    logInfo(`Client connected with UUID: ${userUUID}`);
+    logInfo(`Client connected with UUID: ${userUUID} ${pathname}`);
 
-    if (pathname === "/admin") {
+    if (pathname === "/dashboard" || pathname === "/admin") {
       ws.type = "admin";
       adminClients.push(ws);
       console.log("Admin client connected");
@@ -65,6 +67,7 @@ const initWebSocket = (server) => {
     ws.on("message", (message) => {
       logInfo(`Received message from UUID ${userUUID}: ${message}`);
       const messageString = message?.toString();
+      ws.uuid = userUUID;
 
       if (messageString === "admin") {
         console.log("Admin client connected");
@@ -72,7 +75,7 @@ const initWebSocket = (server) => {
         adminClients.push(ws);
       } else {
         console.log("user client connected");
-        ws.type = "admin";
+        ws.type = "client";
         userClients.push(ws);
       }
     });
@@ -85,32 +88,11 @@ const initWebSocket = (server) => {
   logInfo("WebSocket server initialized");
 };
 
-const broadcast = async (message, senderUUID) => {
-  if (!wss) {
-    logInfo("WebSocket server is not initialized");
-    return;
-  }
-
-  const messageWithUUID = {
-    ...message,
-    senderUUID,
-  };
-
-  logInfo(`Broadcasting message: ${JSON.stringify(messageWithUUID)}`);
-  await (wss.clients.length ? wss.clients : wsClients).forEach(
-    async (client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        await client.send(JSON.stringify(messageWithUUID));
-      }
-    }
-  );
-};
-
 const broadcastLotteryDataToUsers = (message = {}, senderUUID = "") => {
   const messageWithUUID = {
     ...message,
-    userClients: userClients || [],
-    adminClients: adminClients || [],
+    userClients: userClients?.map(({ type, uuid }) => ({ type, uuid })),
+    adminClients: adminClients?.map(({ type, uuid }) => ({ type, uuid })),
     senderUUID,
   };
 
@@ -127,8 +109,8 @@ const broadcastLotteryDataToUsers = (message = {}, senderUUID = "") => {
 const broadcastLotteryDataToAdmins = (message = {}, senderUUID = "") => {
   const messageWithUUID = {
     ...message,
-    adminClients: adminClients || [],
-    userClients: userClients || [],
+    adminClients: adminClients?.map(({ type, uuid }) => ({ type, uuid })),
+    userClients: userClients?.map(({ type, uuid }) => ({ type, uuid })),
     senderUUID,
   };
 
@@ -144,7 +126,6 @@ const broadcastLotteryDataToAdmins = (message = {}, senderUUID = "") => {
 
 module.exports = {
   initWebSocket,
-  broadcast,
   broadcastLotteryDataToAdmins,
   broadcastLotteryDataToUsers,
 };

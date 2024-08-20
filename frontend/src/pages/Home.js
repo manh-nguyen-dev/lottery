@@ -66,7 +66,10 @@ export default function Home() {
 
     socket.onclose = () => {
       console.log("WebSocket connection closed");
-      setTimeout(() => connectSocket(), 1000);
+      setTimeout(function () {
+        console.log("Reconnecting...");
+        connectSocket();
+      }, 5000); // Retry after 5 seconds
     };
 
     setWs(socket);

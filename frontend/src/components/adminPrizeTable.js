@@ -84,11 +84,11 @@ export default function AdminPrizeTable({
     setFilledNumbers(newValues);
   };
 
-  const handleInputBlur = async (e, record, numberId) => {
+  const handleInputBlur = async (e, record, number) => {
+    const { id: numberId, value: numberOldValue } = number || {};
     if (e?.target.value?.length < getMaxLengthForIndex(record)) return;
 
     try {
-      console.log(e);
       const response = await axios.put(`${API_URL}/numbers/${numberId}`, {
         value: e?.target.value,
         session_id: sessionId,
@@ -115,22 +115,25 @@ export default function AdminPrizeTable({
           <div className={prize.className || "flex-row"}>
             {prize.records.map((record, rIdx) => (
               <div key={rIdx} className="prize-number">
-                {filledNumbers[record]?.value && (
+                {
                   <input
                     type="number"
                     value={filledNumbers[record]?.value || ""}
                     onChange={(value) => handleInputChange(value, record)}
                     onBlur={(value) =>
-                      handleInputBlur(value, record, filledNumbers[record]?.id)
+                      handleInputBlur(value, record, filledNumbers[record])
                     }
                     disabled={
                       autoDisabled ||
                       filledNumbers[record]?.status === 3 ||
+                      numbers[record - 3]?.status === 3 ||
+                      numbers[record - 2]?.status === 3 ||
+                      numbers[record - 1]?.status === 3 ||
                       sessionStatus === 3
                     }
                     maxLength={getMaxLengthForIndex(record)}
                   />
-                )}
+                }
               </div>
             ))}
           </div>
