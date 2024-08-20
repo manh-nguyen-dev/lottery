@@ -45,15 +45,14 @@ export default function Home() {
       console.log("socket onmessage", data);
 
       if (data.numbers) {
-        setInitData(data);
-
-        if (initData.sessionId !== data.sessionId) {
+        if (
+          initData.sessionId !== data.sessionId &&
+          data.event !== "numbersListWhenUpdateANumber"
+        ) {
           setNumbers([]);
         }
-        setTimeout(
-          () => setNumbers(data.numbers),
-          numbers.length === 27 ? 3000 : 100
-        );
+        setInitData(data);
+        setTimeout(() => setNumbers(data.numbers), 100);
       }
     };
 
@@ -63,24 +62,6 @@ export default function Home() {
   useEffect(() => {
     let timeout = null;
     const socket = connectSocket(); // Change the URL to your WebSocket server's URL
-
-    socket.onmessage = (event) => {
-      // Parse and handle incoming messages
-      const data = JSON.parse(event.data);
-      console.log("socket onmessage", data);
-
-      if (data.numbers) {
-        setInitData(data);
-
-        if (initData.sessionId !== data.sessionId) {
-          setNumbers([]);
-        }
-        timeout = setTimeout(
-          () => setNumbers(data.numbers),
-          numbers.length === 27 ? 3000 : 100
-        );
-      }
-    };
 
     socket.onclose = () => {
       console.log("WebSocket connection closed");

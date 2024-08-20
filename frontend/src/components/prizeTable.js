@@ -39,6 +39,7 @@ export default function PrizeTable({
 
   useEffect(() => {
     setVisibleNumbers([]);
+    setIsSpinning(false);
   }, [numbers, initData.sessionId]);
 
   useEffect(() => {
