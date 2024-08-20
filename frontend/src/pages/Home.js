@@ -18,11 +18,12 @@ export default function Home() {
 
   const completeRandom = async () => {
     try {
-      setTrying(2);
       const { data } = await axios.put(
         `${API_URL}/sessions/${initData.sessionId}/status/completed`
       );
-
+      setTimeout(() => {
+        setTrying(2);
+      }, 200);
       setInitData((pre) => ({ ...pre, status: SESSION_STATUS.COMPLETED }));
 
       console.log("complete random numbers", data);
@@ -46,7 +47,7 @@ export default function Home() {
 
       if (data.numbers) {
         if (
-          initData.sessionId !== data.sessionId &&
+          initData.sessionId != data.sessionId &&
           data.event !== "numbersListWhenUpdateANumber"
         ) {
           setNumbers([]);

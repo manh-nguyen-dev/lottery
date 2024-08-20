@@ -7,6 +7,32 @@ let wss;
 
 let userClients = [];
 let adminClients = [];
+
+function convertDatesToString(obj = {}) {
+  // Iterate over all properties of the object
+  if (typeof obj === "object") {
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        const value = obj[key];
+
+        // Check if the property is an array
+        if (Array.isArray(value)) {
+          value.forEach((item) => convertDatesToString(item));
+        }
+        // Check if the property is an object and not null
+        else if (typeof value === "object" && value !== null) {
+          convertDatesToString(value);
+        }
+        // Check if the property is a string representation of a date
+        else if (value instanceof Date) {
+          // Convert the Date object to a string
+          obj[key] = value.toISOString();
+        }
+      }
+    }
+  }
+}
+
 const initWebSocket = (server) => {
   wss = new WebSocket.Server({ server });
 
@@ -21,9 +47,11 @@ const initWebSocket = (server) => {
     logInfo(`Client connected with UUID: ${userUUID}`);
 
     if (pathname === "/admin") {
+      ws.type = "admin";
       adminClients.push(ws);
       console.log("Admin client connected");
     } else {
+      ws.type = "client";
       userClients.push(ws);
       console.log("User client connected");
     }
@@ -40,9 +68,11 @@ const initWebSocket = (server) => {
 
       if (messageString === "admin") {
         console.log("Admin client connected");
+        ws.type = "admin";
         adminClients.push(ws);
       } else {
         console.log("user client connected");
+        ws.type = "admin";
         userClients.push(ws);
       }
     });
@@ -79,16 +109,13 @@ const broadcast = async (message, senderUUID) => {
 const broadcastLotteryDataToUsers = (message = {}, senderUUID = "") => {
   const messageWithUUID = {
     ...message,
-    userClients: stringify(userClients) || [],
+    userClients: userClients || [],
+    adminClients: adminClients || [],
     senderUUID,
   };
 
-  const customJSON = JSON.stringify(messageWithUUID, (key, value) => {
-    if (value instanceof Date) {
-      return value.toISOString(); // Convert Date to ISO string
-    }
-    return value;
-  });
+  convertDatesToString(messageWithUUID);
+  const customJSON = JSON.stringify(messageWithUUID);
 
   (userClients.length ? userClients : wss.clients).forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
@@ -101,15 +128,12 @@ const broadcastLotteryDataToAdmins = (message = {}, senderUUID = "") => {
   const messageWithUUID = {
     ...message,
     adminClients: adminClients || [],
+    userClients: userClients || [],
     senderUUID,
   };
 
-  const customJSON = JSON.stringify(messageWithUUID, (key, value) => {
-    if (value instanceof Date) {
-      return value.toISOString(); // Convert Date to ISO string
-    }
-    return value;
-  });
+  convertDatesToString(messageWithUUID);
+  const customJSON = JSON.stringify(messageWithUUID);
 
   (adminClients.length ? adminClients : wss.clients).forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
