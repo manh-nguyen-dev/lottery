@@ -67,6 +67,7 @@ const initWebSocket = (server) => {
     ws.on("message", (message) => {
       logInfo(`Received message from UUID ${userUUID}: ${message}`);
       const messageString = message?.toString();
+      ws.uuid = userUUID;
 
       if (messageString === "admin") {
         console.log("Admin client connected");
