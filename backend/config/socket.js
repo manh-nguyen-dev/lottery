@@ -1,7 +1,6 @@
 const WebSocket = require("ws");
 const { v4: uuidv4 } = require("uuid");
 const { logInfo } = require("../utils/logger");
-const { stringify } = require("flatted");
 
 let wss;
 
@@ -79,6 +78,7 @@ const broadcast = async (message, senderUUID) => {
 const broadcastLotteryDataToUsers = (message, senderUUID) => {
   const messageWithUUID = {
     ...message,
+    userClients: userClients || [],
     senderUUID,
   };
 
@@ -92,6 +92,7 @@ const broadcastLotteryDataToUsers = (message, senderUUID) => {
 const broadcastLotteryDataToAdmins = (message, senderUUID) => {
   const messageWithUUID = {
     ...message,
+    adminClients: adminClients || [],
     senderUUID,
   };
 
