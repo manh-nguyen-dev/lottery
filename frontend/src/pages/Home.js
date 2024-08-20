@@ -25,7 +25,7 @@ export default function Home() {
 
       setInitData((pre) => ({ ...pre, status: SESSION_STATUS.COMPLETED }));
 
-      console.log("completeRandom", data);
+      console.log("complete random numbers", data);
     } catch {
       console.log("error fetch numbers");
     }

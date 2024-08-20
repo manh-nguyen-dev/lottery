@@ -20,9 +20,14 @@ export default function FirstLastTable({ visibleNumbers }) {
   const [twoDigits, setTwoDigits] = useState([]);
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setTwoDigits(visibleNumbers.map((num) => getLastTwoDigits(num.value)));
-    }, 3000);
+    let timeout = null;
+    if (visibleNumbers.length) {
+      timeout = setTimeout(() => {
+        setTwoDigits(visibleNumbers.map((num) => getLastTwoDigits(num.value)));
+      }, 3000);
+    } else {
+      setTwoDigits([]);
+    }
 
     return () => {
       clearTimeout(timeout);

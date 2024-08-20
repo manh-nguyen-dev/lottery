@@ -31,7 +31,7 @@ export default function PrizeTable({
         run_socket: true,
       });
 
-      console.log("updateNumberStatus success", data);
+      console.log("update Number Status to loaded success", data);
     } catch {
       console.log("error fetch numbers");
     }
@@ -39,7 +39,7 @@ export default function PrizeTable({
 
   useEffect(() => {
     setVisibleNumbers([]);
-  }, [initData.sessionId]);
+  }, [numbers, initData.sessionId]);
 
   useEffect(() => {
     let interval;
@@ -65,7 +65,7 @@ export default function PrizeTable({
       visibleNumbers.length === numbers.length &&
       visibleNumbers.length === 27
     ) {
-      setTimeout(completeRandom, 3000);
+      setTimeout(completeRandom, 1000);
     }
 
     return () => clearInterval(interval);
