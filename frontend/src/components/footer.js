@@ -132,7 +132,7 @@ export default function Footer() {
                   Nội dung kết quả xổ số được hợp tác bởi{" "}
                   <a
                     target="_blank"
-                    href="http://xosothudo.com.vn/"
+                    href="#"
                     rel="nofollow noopener noreferrer"
                   >
                     Công ty TNHH Một thành viên Xổ số kiến thiết Thủ đô
