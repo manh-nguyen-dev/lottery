@@ -1,12 +1,12 @@
 require("dotenv").config();
 
-const express = require('express');
-const bodyParser = require('body-parser');
-const http = require('http');
-const sequelize = require('./config/database');
-const sessionRoutes = require('./routes/sessionRoutes');
-const { logInfo, logError } = require('./utils/logger');
-const { initWebSocket } = require('./config/socket');
+const express = require("express");
+const bodyParser = require("body-parser");
+const http = require("http");
+const sequelize = require("./config/database");
+const sessionRoutes = require("./routes/sessionRoutes");
+const { logInfo, logError } = require("./utils/logger");
+const { initWebSocket } = require("./config/socket");
 const cors = require("cors");
 
 const app = express();
@@ -31,7 +31,7 @@ sequelize
   })
   .then(() => {
     server.listen(port, () => {
-      logInfo(`Server đang chạy tại http://localhost:${port}`);
+      logInfo(`Server đang chạy tại ${port}`);
     });
   })
   .catch((err) => {

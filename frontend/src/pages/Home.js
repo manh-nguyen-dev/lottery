@@ -138,7 +138,6 @@ export default function Home() {
       <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
       <link rel="manifest" href="" />
       <link rel="dns-prefetch" href="https://cdn.xoso.com.vn" />
-      <link rel="dns-prefetch" href="http://static.xoso.com.vn" />
       <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
       <link rel="dns-prefetch" href="https://www.googletagservices.com/" />
       <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
