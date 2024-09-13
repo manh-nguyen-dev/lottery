@@ -319,7 +319,7 @@ export default function Home() {
               </div>
               <div id="quaythumb" className="section-content">
                 <header className="section-header">
-                  <h2>Quay thử XSMB 07/08/2024 - Quay thử MB</h2>
+                  <h2>Quay thử XSMB - Quay thử MB</h2>
                   <div className="site-link">
                     <h3 className="site-link">
                       <a title="XSMB" href="/xo-so-mien-bac/xsmb-p1.html">
@@ -328,8 +328,8 @@ export default function Home() {
                       <a title="XSMB Thứ 4" href="/xsmb-thu-4.html">
                         XSMB Thứ 4
                       </a>
-                      <a title="XSMB 07/08/2024" href="/xsmb-07-08-2024.html">
-                        XSMB 07/08/2024
+                      <a title="XSMB " href="#">
+                        XSMB
                       </a>
                     </h3>
                   </div>
@@ -619,7 +619,7 @@ export default function Home() {
                           max="2024-08-07"
                           data-date=""
                           data-date-format="DD MMMM YYYY"
-                          defaultValue="2024-07-07"
+                          defaultValue=""
                         />
                       </div>
                     </div>
@@ -633,7 +633,7 @@ export default function Home() {
                           max="2024-08-07"
                           data-date=""
                           data-date-format="DD MMMM YYYY"
-                          defaultValue="2024-08-07"
+                          defaultValue=""
                         />
                       </div>
                     </div>
