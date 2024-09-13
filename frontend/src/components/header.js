@@ -3,7 +3,7 @@ import styles from "../styleAll.css";
 export default function Header() {
   return (
     <>
-        <header className={styles.header}>
+      <header className={styles.header}>
         <div className="header-content headermobi">
           <div className="main-content">
             <span className="btn-pushbar-3" data-pushbar-target="left">
@@ -25,8 +25,7 @@ export default function Header() {
               </a>
             </div>
             <div className="header-right">
-              <div className="header-time">Hôm nay: Thứ Tư ngày 07/08/2024</div>
-              <a className="btn-calendar" href="/kqxs-07-08-2024.html">
+              <a className="btn-calendar" href="#">
                 <img
                   alt="ket qua xo so hom nay"
                   className="icon-calendar"
